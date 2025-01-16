@@ -1,0 +1,121 @@
+{
+  "ModuleName": "${ModuleName}",
+  "Version": "${Version}",
+  "Author": "${Author}",
+  "Description": "PowerShell module for secure CompassOne cyber security platform integration",
+  "Company": "Blackpoint",
+  "Copyright": "(c) ${Year} Blackpoint. All rights reserved.",
+  "PowerShellVersion": "5.1",
+  "CompatiblePSEditions": [
+    "Desktop",
+    "Core"
+  ],
+  "BuildOutputPath": "../../build",
+  "SourcePath": "../../src",
+  "TestPath": "../../src/test",
+  "DocsPath": "../../docs",
+  "RequiredModules": [
+    {
+      "Name": "Microsoft.PowerShell.SecretStore",
+      "Version": "1.0.6"
+    },
+    {
+      "Name": "PSScriptAnalyzer",
+      "Version": "1.20.0"
+    }
+  ],
+  "ExternalModuleDependencies": [
+    {
+      "Name": "Microsoft.PowerShell.SecretStore",
+      "Version": "1.0.6"
+    }
+  ],
+  "Tags": [
+    "CompassOne",
+    "Security",
+    "API",
+    "PSEdition_Desktop",
+    "PSEdition_Core",
+    "Windows",
+    "Linux",
+    "SecureAPI",
+    "CyberSecurity"
+  ],
+  "ProjectUri": "https://github.com/blackpoint/pscompassone",
+  "LicenseUri": "https://github.com/blackpoint/pscompassone/blob/main/LICENSE",
+  "ReleaseNotes": "https://github.com/blackpoint/pscompassone/blob/main/CHANGELOG.md",
+  "FunctionsToExport": [
+    "Get-CraftAsset",
+    "New-CraftAsset",
+    "Set-CraftAsset",
+    "Remove-CraftAsset",
+    "Get-CraftFinding",
+    "New-CraftFinding",
+    "Set-CraftFinding",
+    "Remove-CraftFinding",
+    "Get-CraftSecurityConfiguration",
+    "Set-CraftSecurityConfiguration"
+  ],
+  "CmdletsToExport": [],
+  "VariablesToExport": [],
+  "AliasesToExport": [],
+  "FileList": [
+    "PSCompassOne.psd1",
+    "PSCompassOne.psm1",
+    "en-US/about_PSCompassOne.help.txt",
+    "security/security.config.json"
+  ],
+  "BuildSettings": {
+    "CodeAnalysis": {
+      "Enabled": true,
+      "Severity": "Error",
+      "ExcludeRules": [],
+      "SecurityRules": [
+        "PSAvoidUsingPlainTextForPassword",
+        "PSAvoidUsingConvertToSecureStringWithPlainText",
+        "PSUsePSCredentialType"
+      ]
+    },
+    "Testing": {
+      "Enabled": true,
+      "CodeCoverage": {
+        "Enabled": true,
+        "Threshold": 100,
+        "OutputFormat": [
+          "JaCoCo",
+          "CoverageGutters"
+        ]
+      },
+      "SecurityTests": {
+        "Enabled": true,
+        "RequiredTests": [
+          "Authentication",
+          "Authorization",
+          "DataProtection"
+        ]
+      }
+    },
+    "Documentation": {
+      "GenerateMarkdown": true,
+      "GenerateMAML": true,
+      "OutputPath": "../../docs",
+      "SecurityDocs": {
+        "Enabled": true,
+        "RequiredSections": [
+          "SecurityBestPractices",
+          "ComplianceRequirements"
+        ]
+      }
+    },
+    "Security": {
+      "RequireCodeSigning": true,
+      "MinimumTLSVersion": "1.2",
+      "RequireSecureCredentialStore": true,
+      "AuditLogging": {
+        "Enabled": true,
+        "Level": "Verbose",
+        "RetentionDays": 90
+      }
+    }
+  }
+}
