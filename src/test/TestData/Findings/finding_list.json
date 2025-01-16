@@ -1,0 +1,124 @@
+{
+  "findings": [
+    {
+      "id": "12345678-1234-1234-1234-123456789012",
+      "findingClass": "Alert",
+      "name": "Suspicious Network Connection",
+      "description": "Detected unusual outbound connection pattern",
+      "severity": "High",
+      "status": "New",
+      "accountId": "acc-test-001",
+      "customerId": "cust-test-001",
+      "createdOn": "2024-01-20T10:00:00Z",
+      "updatedOn": "2024-01-20T10:00:00Z",
+      "deletedOn": null,
+      "tags": ["network", "suspicious", "outbound"],
+      "relationships": [],
+      "properties": {
+        "sourceIp": "192.168.1.100",
+        "destinationIp": "203.0.113.1",
+        "protocol": "TCP",
+        "port": 445
+      }
+    },
+    {
+      "id": "23456789-2345-2345-2345-234567890123",
+      "findingClass": "Event",
+      "name": "Failed Authentication Attempts",
+      "description": "Multiple failed login attempts detected",
+      "severity": "Medium",
+      "status": "InProgress",
+      "accountId": "acc-test-001",
+      "customerId": "cust-test-001",
+      "createdOn": "2024-01-20T09:30:00Z",
+      "updatedOn": "2024-01-20T10:15:00Z",
+      "deletedOn": null,
+      "tags": ["authentication", "security", "login"],
+      "relationships": [
+        {
+          "type": "RELATED_TO",
+          "sourceId": "23456789-2345-2345-2345-234567890123",
+          "targetId": "34567890-3456-3456-3456-345678901234",
+          "properties": {
+            "relationshipType": "parent"
+          }
+        }
+      ],
+      "properties": {
+        "username": "admin",
+        "attempts": 5,
+        "sourceIp": "192.168.1.50"
+      }
+    },
+    {
+      "id": "34567890-3456-3456-3456-345678901234",
+      "findingClass": "Incident",
+      "name": "Ransomware Detection",
+      "description": "Potential ransomware activity detected",
+      "severity": "Critical",
+      "status": "New",
+      "accountId": "acc-test-001",
+      "customerId": "cust-test-001",
+      "createdOn": "2024-01-20T08:00:00Z",
+      "updatedOn": "2024-01-20T08:00:00Z",
+      "deletedOn": null,
+      "tags": ["malware", "ransomware", "critical"],
+      "relationships": [],
+      "properties": {
+        "affectedSystems": ["ws-001", "ws-002"],
+        "malwareHash": "a1b2c3d4e5f6",
+        "detectionEngine": "EDR"
+      }
+    },
+    {
+      "id": "45678901-4567-4567-4567-456789012345",
+      "findingClass": "Alert",
+      "name": "Policy Violation",
+      "description": "Security policy violation detected",
+      "severity": "Low",
+      "status": "Closed",
+      "accountId": "acc-test-001",
+      "customerId": "cust-test-001",
+      "createdOn": "2024-01-19T15:00:00Z",
+      "updatedOn": "2024-01-20T09:00:00Z",
+      "deletedOn": null,
+      "tags": ["policy", "compliance"],
+      "relationships": [],
+      "properties": {
+        "policyId": "POL-001",
+        "violationType": "USB_STORAGE",
+        "deviceId": "DEV-123"
+      }
+    },
+    {
+      "id": "56789012-5678-5678-5678-567890123456",
+      "findingClass": "Event",
+      "name": "System Configuration Change",
+      "description": "Unauthorized system configuration modification",
+      "severity": "Medium",
+      "status": "Resolved",
+      "accountId": "acc-test-001",
+      "customerId": "cust-test-001",
+      "createdOn": "2024-01-19T14:30:00Z",
+      "updatedOn": "2024-01-20T11:00:00Z",
+      "deletedOn": null,
+      "tags": ["configuration", "change-management"],
+      "relationships": [],
+      "properties": {
+        "changeType": "REGISTRY",
+        "path": "HKLM\\Software\\Policies",
+        "username": "system"
+      }
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "pageSize": 50,
+    "totalItems": 5,
+    "totalPages": 1
+  },
+  "sorting": {
+    "sortBy": "createdOn",
+    "sortOrder": "desc"
+  }
+}
