@@ -1,0 +1,15 @@
+{
+  "Certificate": {
+    "Thumbprint": "1234567890ABCDEF1234567890ABCDEF12345678",
+    "StoreLocation": "LocalMachine",
+    "StoreName": "TrustedPublisher"
+  },
+  "TimestampServer": "https://timestamp.digicert.com",
+  "SigningAlgorithm": "SHA512",
+  "FileTypes": [
+    ".ps1",
+    ".psm1",
+    ".psd1",
+    ".dll"
+  ]
+}
