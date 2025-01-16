@@ -1,0 +1,102 @@
+{
+  "PowerShellGallery": {
+    "Enabled": true,
+    "RepositoryName": "PSGallery",
+    "ApiKeyVariable": "POWERSHELL_GALLERY_API_KEY",
+    "PublishTimeout": 300,
+    "RetryAttempts": 3,
+    "RetryDelaySeconds": 30,
+    "RequireCodeSigning": true,
+    "RequireSecurityCheck": true,
+    "SecurityScanTimeout": 600,
+    "AllowPrerelease": false,
+    "RequiredPowerShellVersions": [
+      "5.1",
+      "7.0",
+      "7.x"
+    ]
+  },
+  "GitHubPackages": {
+    "Enabled": true,
+    "RepositoryUrl": "https://nuget.pkg.github.com/blackpoint/index.json",
+    "TokenVariable": "GITHUB_TOKEN",
+    "PublishTimeout": 300,
+    "RetryAttempts": 3,
+    "RetryDelaySeconds": 30,
+    "RequireVersionTag": true,
+    "RequireChangelogUpdate": true,
+    "TagPrefix": "v",
+    "PackageFormat": "nupkg",
+    "IncludeSymbols": true
+  },
+  "Validation": {
+    "RequiredTests": [
+      "UnitTests",
+      "IntegrationTests",
+      "SecurityTests",
+      "ComplianceTests",
+      "CrossPlatformTests"
+    ],
+    "MinimumCodeCoverage": 100,
+    "RequireChangelogUpdate": true,
+    "RequireVersionBump": true,
+    "BlockOnSecurityIssues": true,
+    "RequireApproval": true,
+    "ApproverRoles": [
+      "Maintainer",
+      "SecurityTeam"
+    ],
+    "SecurityChecks": {
+      "DependencyScanning": true,
+      "CodeAnalysis": true,
+      "VulnerabilityCheck": true,
+      "LicenseCompliance": true
+    },
+    "VersioningRules": {
+      "EnforceSemVer": true,
+      "RequireMajorBumpApproval": true,
+      "AutoPatchBump": true,
+      "PreventDowngrade": true
+    }
+  },
+  "Notifications": {
+    "Email": {
+      "Enabled": true,
+      "Recipients": [
+        "team@blackpoint.com"
+      ],
+      "OnSuccess": true,
+      "OnFailure": true,
+      "IncludeChangeLog": true,
+      "IncludeTestResults": true,
+      "Template": "email-template.html",
+      "FromAddress": "ci@blackpoint.com"
+    },
+    "Teams": {
+      "Enabled": true,
+      "WebhookUrl": "TEAMS_WEBHOOK_URL",
+      "OnSuccess": true,
+      "OnFailure": true,
+      "IncludeDetails": true,
+      "MentionOnFailure": [
+        "@SecurityTeam"
+      ],
+      "CardTemplate": "teams-card-template.json",
+      "ThreadingEnabled": true
+    },
+    "GitHub": {
+      "CreateRelease": true,
+      "CreateIssueOnFailure": true,
+      "NotifyContributors": true,
+      "LabelNewVersion": true,
+      "AutoGenerateReleaseNotes": true,
+      "ReleaseTemplate": "release-template.md",
+      "IssueLabels": [
+        "ci-failure",
+        "needs-attention"
+      ],
+      "MentionReviewers": true,
+      "IncludeTestSummary": true
+    }
+  }
+}
