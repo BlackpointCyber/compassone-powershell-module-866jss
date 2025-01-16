@@ -1,0 +1,351 @@
+{
+  "successResponses": {
+    "getAssetResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": "application/json",
+        "Request-Id": "req-test-001",
+        "API-Version": "v1",
+        "PowerShell-Format-Version": "1.0.0"
+      },
+      "body": {
+        "data": {
+          "id": "00000000-0000-0000-0000-000000000001",
+          "assetClass": "DEVICE",
+          "name": "TestWebServer01",
+          "accountId": "00000000-0000-0000-0000-000000000002",
+          "customerId": "00000000-0000-0000-0000-000000000003",
+          "status": "Active",
+          "createdOn": "2024-01-01T00:00:00Z",
+          "updatedOn": "2024-01-20T15:30:00Z",
+          "lastSeen": "2024-01-20T15:30:00Z",
+          "properties": {
+            "os": "Windows Server 2019",
+            "ip": "192.168.1.100",
+            "location": "US-East",
+            "version": "1.2.3",
+            "custom": {
+              "environment": "Production",
+              "department": "IT",
+              "criticality": "High"
+            }
+          },
+          "tags": [
+            "Production",
+            "WebServer",
+            "Critical"
+          ],
+          "relationships": [
+            {
+              "id": "00000000-0000-0000-0000-000000000004",
+              "type": "DEPENDS_ON",
+              "direction": "OUTBOUND"
+            }
+          ]
+        },
+        "metadata": {
+          "formatType": "Default",
+          "typeNames": ["CompassOne.Asset"],
+          "defaultView": "Table",
+          "pipelineEnabled": true
+        }
+      }
+    },
+    "getAssetListResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": "application/json",
+        "Request-Id": "req-test-002",
+        "API-Version": "v1",
+        "PowerShell-Format-Version": "1.0.0"
+      },
+      "body": {
+        "items": [
+          {
+            "id": "00000000-0000-0000-0000-000000000001",
+            "assetClass": "DEVICE",
+            "name": "TestWebServer01",
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "00000000-0000-0000-0000-000000000003",
+            "status": "Active",
+            "lastSeen": "2024-01-20T15:30:00Z"
+          },
+          {
+            "id": "00000000-0000-0000-0000-000000000005",
+            "assetClass": "CONTAINER",
+            "name": "TestContainer01",
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "00000000-0000-0000-0000-000000000003",
+            "status": "Running",
+            "lastSeen": "2024-01-20T15:30:00Z"
+          }
+        ],
+        "totalItems": 2,
+        "pageSize": 50,
+        "pageNumber": 1,
+        "metadata": {
+          "formatType": "Table",
+          "typeNames": ["CompassOne.Asset"],
+          "defaultView": "Table",
+          "pipelineEnabled": true,
+          "paginationInfo": {
+            "hasNextPage": false,
+            "hasPreviousPage": false,
+            "totalPages": 1
+          }
+        }
+      }
+    },
+    "getFindingResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": "application/json",
+        "Request-Id": "req-test-003",
+        "API-Version": "v1",
+        "PowerShell-Format-Version": "1.0.0"
+      },
+      "body": {
+        "data": {
+          "id": "12345678-1234-1234-1234-123456789012",
+          "findingClass": "Alert",
+          "name": "Basic Test Finding",
+          "description": "A basic finding for testing core operations",
+          "severity": "High",
+          "status": "New",
+          "accountId": "acc-test-001",
+          "customerId": "cust-test-001",
+          "createdOn": "2024-01-01T00:00:00Z",
+          "updatedOn": "2024-01-01T00:00:00Z",
+          "deletedOn": null,
+          "tags": [],
+          "relationships": [],
+          "properties": {}
+        },
+        "metadata": {
+          "formatType": "Default",
+          "typeNames": ["CompassOne.Finding"],
+          "defaultView": "Table",
+          "pipelineEnabled": true
+        }
+      }
+    },
+    "getFindingListResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": "application/json",
+        "Request-Id": "req-test-004",
+        "API-Version": "v1",
+        "PowerShell-Format-Version": "1.0.0"
+      },
+      "body": {
+        "items": [
+          {
+            "id": "56789012-5678-5678-5678-567890123456",
+            "findingClass": "Alert",
+            "name": "List Finding 1",
+            "severity": "High",
+            "status": "New",
+            "createdOn": "2024-01-01T00:00:00Z"
+          },
+          {
+            "id": "67890123-6789-6789-6789-678901234567",
+            "findingClass": "Event",
+            "name": "List Finding 2",
+            "severity": "Medium",
+            "status": "InProgress",
+            "createdOn": "2024-01-02T00:00:00Z"
+          }
+        ],
+        "totalItems": 2,
+        "pageSize": 50,
+        "pageNumber": 1,
+        "metadata": {
+          "formatType": "Table",
+          "typeNames": ["CompassOne.Finding"],
+          "defaultView": "Table",
+          "pipelineEnabled": true,
+          "paginationInfo": {
+            "hasNextPage": false,
+            "hasPreviousPage": false,
+            "totalPages": 1
+          }
+        }
+      }
+    }
+  },
+  "errorResponses": {
+    "badRequestResponse": {
+      "statusCode": 400,
+      "headers": {
+        "Content-Type": "application/json",
+        "Request-Id": "req-error-001",
+        "API-Version": "v1"
+      },
+      "error": {
+        "code": "BadRequest",
+        "message": "Invalid request parameters",
+        "details": {
+          "validationErrors": [
+            {
+              "field": "name",
+              "message": "Name is required"
+            }
+          ]
+        },
+        "powerShell": {
+          "errorCategory": "InvalidArgument",
+          "errorId": "PSCompassOne.BadRequest",
+          "recommendedAction": "Verify the request parameters and try again",
+          "troubleshooting": [
+            "Check that all required fields are provided",
+            "Ensure field values meet validation requirements",
+            "Review the API documentation for parameter specifications"
+          ]
+        }
+      }
+    },
+    "unauthorizedResponse": {
+      "statusCode": 401,
+      "headers": {
+        "Content-Type": "application/json",
+        "Request-Id": "req-error-002",
+        "API-Version": "v1"
+      },
+      "error": {
+        "code": "Unauthorized",
+        "message": "Authentication failed",
+        "details": {
+          "reason": "Invalid or expired API token"
+        },
+        "powerShell": {
+          "errorCategory": "SecurityError",
+          "errorId": "PSCompassOne.Unauthorized",
+          "recommendedAction": "Provide valid authentication credentials",
+          "troubleshooting": [
+            "Check that the API token is valid",
+            "Verify the token has not expired",
+            "Use Set-CraftConfiguration to update credentials"
+          ]
+        }
+      }
+    },
+    "notFoundResponse": {
+      "statusCode": 404,
+      "headers": {
+        "Content-Type": "application/json",
+        "Request-Id": "req-error-003",
+        "API-Version": "v1"
+      },
+      "error": {
+        "code": "NotFound",
+        "message": "Resource not found",
+        "details": {
+          "resourceType": "Asset",
+          "resourceId": "00000000-0000-0000-0000-000000000001"
+        },
+        "powerShell": {
+          "errorCategory": "ObjectNotFound",
+          "errorId": "PSCompassOne.NotFound",
+          "recommendedAction": "Verify the resource exists",
+          "troubleshooting": [
+            "Check that the resource ID is correct",
+            "Verify the resource has not been deleted",
+            "Ensure you have permission to access the resource"
+          ]
+        }
+      }
+    },
+    "rateLimitResponse": {
+      "statusCode": 429,
+      "headers": {
+        "Content-Type": "application/json",
+        "Request-Id": "req-error-004",
+        "API-Version": "v1",
+        "Retry-After": "60"
+      },
+      "error": {
+        "code": "TooManyRequests",
+        "message": "Rate limit exceeded",
+        "details": {
+          "retryAfterSeconds": 60,
+          "limit": "100 requests per minute"
+        },
+        "powerShell": {
+          "errorCategory": "LimitsExceeded",
+          "errorId": "PSCompassOne.RateLimit",
+          "recommendedAction": "Wait before retrying the request",
+          "troubleshooting": [
+            "Wait for the specified retry period",
+            "Consider implementing request throttling",
+            "Review your API usage patterns"
+          ]
+        }
+      }
+    }
+  },
+  "responseTemplates": {
+    "baseSuccessResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": "application/json",
+        "Request-Id": "",
+        "API-Version": "v1",
+        "PowerShell-Format-Version": "1.0.0"
+      },
+      "body": {
+        "data": {},
+        "metadata": {
+          "formatType": "Default",
+          "typeNames": [],
+          "defaultView": "Table",
+          "pipelineEnabled": true
+        }
+      }
+    },
+    "baseErrorResponse": {
+      "statusCode": 400,
+      "headers": {
+        "Content-Type": "application/json",
+        "Request-Id": "",
+        "API-Version": "v1"
+      },
+      "error": {
+        "code": "",
+        "message": "",
+        "details": {},
+        "powerShell": {
+          "errorCategory": "",
+          "errorId": "PSCompassOne.",
+          "recommendedAction": "",
+          "troubleshooting": []
+        }
+      }
+    },
+    "paginatedResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": "application/json",
+        "Request-Id": "",
+        "API-Version": "v1",
+        "PowerShell-Format-Version": "1.0.0"
+      },
+      "body": {
+        "items": [],
+        "totalItems": 0,
+        "pageSize": 50,
+        "pageNumber": 1,
+        "metadata": {
+          "formatType": "Table",
+          "typeNames": [],
+          "defaultView": "Table",
+          "pipelineEnabled": true,
+          "paginationInfo": {
+            "hasNextPage": false,
+            "hasPreviousPage": false,
+            "totalPages": 0
+          }
+        }
+      }
+    }
+  }
+}
