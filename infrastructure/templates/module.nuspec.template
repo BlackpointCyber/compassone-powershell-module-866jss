@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <!-- Package Identifier -->
+    <id>__PACKAGE_ID__</id>
+    <version>__VERSION__</version>
+    <authors>__AUTHORS__</authors>
+    <owners>__OWNERS__</owners>
+    
+    <!-- Package Properties -->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/blackpoint/pscompassone</projectUrl>
+    
+    <!-- Source Control -->
+    <repository type="git" url="__REPOSITORY_URL__" branch="main" />
+    
+    <!-- Package Description -->
+    <description>__DESCRIPTION__</description>
+    <copyright>__COPYRIGHT__</copyright>
+    <releaseNotes>__RELEASE_NOTES__</releaseNotes>
+    
+    <!-- Package Tags -->
+    <tags>CompassOne Security API PowerShell PSEdition_Desktop PSEdition_Core Windows Linux PSFunction_Get-CraftAsset PSFunction_New-CraftAsset PSFunction_Set-CraftAsset PSFunction_Remove-CraftAsset PSIncludes_Function</tags>
+    
+    <!-- Package Dependencies -->
+    <dependencies>
+      <dependency id="Microsoft.PowerShell.SecretStore" version="[1.0.6,2.0.0)" />
+    </dependencies>
+    
+    <!-- Package Type -->
+    <packageTypes>
+      <packageType name="Module" version="[5.1.0,)" />
+    </packageTypes>
+  </metadata>
+  
+  <!-- Package Contents -->
+  <files>
+    <!-- Module Core Files -->
+    <file src="PSCompassOne.psd1" target="PSCompassOne.psd1" />
+    <file src="PSCompassOne.psm1" target="PSCompassOne.psm1" />
+    
+    <!-- Documentation -->
+    <file src="en-US/about_PSCompassOne.help.txt" target="en-US/about_PSCompassOne.help.txt" />
+    <file src="en-US/PSCompassOne.Format.ps1xml" target="en-US/PSCompassOne.Format.ps1xml" />
+    
+    <!-- Formatters -->
+    <file src="formatters/*.Format.ps1xml" target="formatters" />
+    
+    <!-- PowerShell Functions -->
+    <file src="functions/*.ps1" target="functions" />
+    <file src="internal/*.ps1" target="internal" />
+    
+    <!-- Configuration -->
+    <file src="config/*.json" target="config" />
+    
+    <!-- Resources -->
+    <file src="resources/**.resx" target="resources" />
+    
+    <!-- Platform-Specific Libraries -->
+    <file src="lib/net6.0/**" target="lib/net6.0" />
+    <file src="lib/net7.0/**" target="lib/net7.0" />
+  </files>
+</package>
