@@ -1,0 +1,97 @@
+name: publish
+
+on:
+  workflow_dispatch:  # Manual trigger with approval requirements
+  release:
+    types: [published]  # Automatic trigger on release publish
+
+# Environment protection with required approvals and wait timer
+environment:
+  name: production
+  url: https://www.powershellgallery.com/packages/PSCompassOne
+  
+# Limit permissions to minimum required
+permissions:
+  contents: read
+  packages: write
+  issues: write
+
+# Prevent concurrent publishing operations
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Full history for versioning
+          persist-credentials: false  # Security: Don't persist credentials
+          
+      - name: Setup PowerShell
+        uses: PowerShell/PowerShell@v7.2
+        with:
+          pwsh-version: '7.2'
+          
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.x'
+          
+      - name: Install Dependencies
+        run: ./infrastructure/scripts/install-dependencies.ps1
+        shell: pwsh
+        timeout-minutes: 5
+        
+      - name: Validate Module
+        run: ./infrastructure/scripts/validate-module.ps1
+        shell: pwsh
+        timeout-minutes: 5
+        
+      - name: Build Module
+        run: ./infrastructure/scripts/build.ps1
+        shell: pwsh
+        timeout-minutes: 10
+        
+      - name: Sign Module
+        run: ./infrastructure/scripts/sign.ps1
+        shell: pwsh
+        timeout-minutes: 5
+        env:
+          CODE_SIGNING_CERT: ${{ secrets.CODE_SIGNING_CERT }}
+          CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
+          
+      - name: Publish Module
+        if: success()  # Only publish if all previous steps succeeded
+        run: ./infrastructure/scripts/publish.ps1
+        shell: pwsh
+        timeout-minutes: 10
+        env:
+          POWERSHELL_GALLERY_API_KEY: ${{ secrets.POWERSHELL_GALLERY_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Create Issue on Failure
+        if: failure()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const title = 'Module Publishing Failed';
+            const body = `Publishing workflow failed on ${process.env.GITHUB_REF}
+            
+            Workflow: ${process.env.GITHUB_WORKFLOW}
+            Run: ${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}
+            
+            Please investigate and re-run the workflow after fixing any issues.`;
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: body,
+              labels: ['publishing-error', 'high-priority']
+            });
