@@ -1,0 +1,168 @@
+{
+  "invalidFindingTemplates": {
+    "invalidFindingClass": {
+      "description": "Finding with invalid finding class value including empty and malformed values",
+      "testCases": [
+        {
+          "findingClass": "InvalidClass",
+          "name": "Invalid Finding Class Test",
+          "description": "Test finding with invalid class",
+          "severity": "High",
+          "status": "New",
+          "accountId": "test-account-id",
+          "customerId": "test-customer-id",
+          "expectedError": {
+            "code": "ERR_INVALID_CLASS",
+            "message": "InvalidArgument - findingClass must be one of: Alert, Event, Incident",
+            "remediation": "Please specify a valid finding class from the allowed values"
+          }
+        },
+        {
+          "findingClass": "",
+          "name": "Empty Finding Class Test",
+          "description": "Test finding with empty class",
+          "severity": "High",
+          "status": "New",
+          "accountId": "test-account-id",
+          "customerId": "test-customer-id",
+          "expectedError": {
+            "code": "ERR_INVALID_CLASS",
+            "message": "InvalidArgument - findingClass cannot be empty",
+            "remediation": "Please specify a valid finding class from: Alert, Event, Incident"
+          }
+        },
+        {
+          "findingClass": "123",
+          "name": "Numeric Finding Class Test",
+          "description": "Test finding with numeric class",
+          "severity": "High",
+          "status": "New",
+          "accountId": "test-account-id",
+          "customerId": "test-customer-id",
+          "expectedError": {
+            "code": "ERR_INVALID_CLASS",
+            "message": "InvalidArgument - findingClass must contain only letters",
+            "remediation": "Please specify a valid finding class using only alphabetic characters"
+          }
+        }
+      ]
+    },
+    "invalidSeverity": {
+      "description": "Finding with invalid severity level including boundary cases",
+      "testCases": [
+        {
+          "findingClass": "Alert",
+          "name": "Invalid Severity Test",
+          "description": "Test finding with invalid severity",
+          "severity": "SuperCritical",
+          "status": "New",
+          "accountId": "test-account-id",
+          "customerId": "test-customer-id",
+          "expectedError": {
+            "code": "ERR_INVALID_SEVERITY",
+            "message": "InvalidArgument - severity must be one of: Critical, High, Medium, Low, Info",
+            "remediation": "Please specify a valid severity level from the allowed values"
+          }
+        },
+        {
+          "findingClass": "Alert",
+          "name": "Case Sensitive Severity Test",
+          "description": "Test finding with incorrect case severity",
+          "severity": "critical",
+          "status": "New",
+          "accountId": "test-account-id",
+          "customerId": "test-customer-id",
+          "expectedError": {
+            "code": "ERR_INVALID_SEVERITY",
+            "message": "InvalidArgument - severity values are case-sensitive",
+            "remediation": "Please use correct case: Critical, High, Medium, Low, Info"
+          }
+        }
+      ]
+    },
+    "invalidRelationships": {
+      "description": "Finding with invalid relationship structures",
+      "testCases": [
+        {
+          "findingClass": "Alert",
+          "name": "Missing Required Fields Test",
+          "description": "Test finding with missing relationship fields",
+          "severity": "High",
+          "status": "New",
+          "accountId": "test-account-id",
+          "customerId": "test-customer-id",
+          "relationships": [
+            {
+              "type": "RELATED_TO"
+              // Missing targetId and targetType
+            }
+          ],
+          "expectedError": {
+            "code": "ERR_INVALID_RELATIONSHIP",
+            "message": "InvalidArgument - relationship must contain type, targetId, and targetType",
+            "remediation": "Please ensure all required relationship fields are provided"
+          }
+        },
+        {
+          "findingClass": "Alert",
+          "name": "Circular Reference Test",
+          "description": "Test finding with circular relationship",
+          "severity": "High",
+          "status": "New",
+          "accountId": "test-account-id",
+          "customerId": "test-customer-id",
+          "relationships": [
+            {
+              "type": "RELATED_TO",
+              "targetId": "self-reference-id",
+              "targetType": "Finding"
+            }
+          ],
+          "expectedError": {
+            "code": "ERR_CIRCULAR_REFERENCE",
+            "message": "InvalidArgument - circular relationships are not allowed",
+            "remediation": "Please ensure relationships do not create circular references"
+          }
+        }
+      ]
+    },
+    "invalidDataTypes": {
+      "description": "Finding with invalid data types for fields",
+      "testCases": [
+        {
+          "findingClass": ["Alert"],
+          "name": 12345,
+          "description": true,
+          "severity": ["High"],
+          "status": {"current": "New"},
+          "accountId": "test-account-id",
+          "customerId": "test-customer-id",
+          "expectedError": {
+            "code": "ERR_INVALID_DATA_TYPE",
+            "message": "InvalidArgument - invalid data types for multiple fields",
+            "remediation": "Please ensure all fields use correct data types as specified in the schema"
+          }
+        }
+      ]
+    },
+    "invalidLength": {
+      "description": "Finding with fields exceeding maximum length",
+      "testCases": [
+        {
+          "findingClass": "Alert",
+          "name": "A".repeat(256),
+          "description": "Test finding with name exceeding max length",
+          "severity": "High",
+          "status": "New",
+          "accountId": "test-account-id",
+          "customerId": "test-customer-id",
+          "expectedError": {
+            "code": "ERR_FIELD_TOO_LONG",
+            "message": "InvalidArgument - name field exceeds maximum length of 255 characters",
+            "remediation": "Please ensure the name field is within the maximum length limit"
+          }
+        }
+      ]
+    }
+  }
+}
