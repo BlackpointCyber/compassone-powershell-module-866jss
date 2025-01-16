@@ -1,0 +1,77 @@
+{
+  "TestExecution": {
+    "ParallelExecution": true,
+    "MaxParallelJobs": 4,
+    "TimeoutSeconds": 3600,
+    "RetryCount": 3,
+    "RetryDelaySeconds": 5,
+    "StopOnError": true,
+    "CleanupAfterTest": true,
+    "TestCategories": [
+      "Unit",
+      "Integration", 
+      "Security",
+      "Performance"
+    ],
+    "ExcludeCategories": [
+      "Skip",
+      "Manual"
+    ]
+  },
+  "TestEnvironment": {
+    "ApiEndpoint": "https://api.compassone.com",
+    "UseSecretStore": true,
+    "MockResponses": true,
+    "CacheEnabled": true,
+    "LogLevel": "Detailed",
+    "TempPath": "./temp",
+    "OutputPath": "./test-results",
+    "ModulePath": "../PSCompassOne",
+    "TestDataPath": "./TestData",
+    "MockDataPath": "./Mocks"
+  },
+  "TestMatrix": {
+    "PowerShellVersions": [
+      "5.1",
+      "7.0",
+      "7.2"
+    ],
+    "OperatingSystems": [
+      "Windows",
+      "Linux",
+      "MacOS"
+    ],
+    "Features": {
+      "AsyncOperations": true,
+      "EnhancedClassSupport": true,
+      "CrossPlatform": true
+    }
+  },
+  "Reporting": {
+    "Enabled": true,
+    "Formats": [
+      "NUnitXml",
+      "Html",
+      "Json"
+    ],
+    "OutputPath": "./test-results",
+    "IncludePassedTests": true,
+    "IncludeSkippedTests": true,
+    "IncludeCodeCoverage": true,
+    "GenerateSummary": true
+  },
+  "Logging": {
+    "Enabled": true,
+    "Level": "Detailed",
+    "Path": "./logs",
+    "IncludeTimestamp": true,
+    "IncludeThreadId": true,
+    "RetentionDays": 30,
+    "Categories": [
+      "Test",
+      "Coverage",
+      "Performance",
+      "Security"
+    ]
+  }
+}
