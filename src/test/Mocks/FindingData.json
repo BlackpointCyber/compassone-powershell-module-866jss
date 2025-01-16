@@ -1,0 +1,158 @@
+{
+  "findingTemplates": {
+    "createFindingTemplate": {
+      "findingClass": "Alert",
+      "name": "Test Finding",
+      "description": "Template for creating new findings",
+      "severity": "High",
+      "status": "New",
+      "accountId": "acc-test-001",
+      "customerId": "cust-test-001",
+      "tags": [],
+      "relationships": [],
+      "properties": {}
+    },
+    "updateFindingTemplate": {
+      "id": "12345678-1234-1234-1234-123456789012",
+      "findingClass": "Alert",
+      "name": "Updated Finding",
+      "description": "Template for updating existing findings",
+      "severity": "Medium",
+      "status": "InProgress",
+      "accountId": "acc-test-001",
+      "customerId": "cust-test-001",
+      "createdOn": "2024-01-01T00:00:00Z",
+      "updatedOn": "2024-01-02T00:00:00Z",
+      "deletedOn": null,
+      "tags": ["test", "update"],
+      "relationships": [],
+      "properties": {
+        "updatedBy": "test-user"
+      }
+    },
+    "findingListTemplate": [
+      {
+        "id": "12345678-1234-1234-1234-123456789012",
+        "findingClass": "Alert",
+        "name": "Finding 1",
+        "severity": "High",
+        "status": "New"
+      },
+      {
+        "id": "23456789-2345-2345-2345-234567890123",
+        "findingClass": "Event",
+        "name": "Finding 2",
+        "severity": "Medium",
+        "status": "InProgress"
+      }
+    ]
+  },
+  "mockFindings": {
+    "basicFinding": {
+      "id": "12345678-1234-1234-1234-123456789012",
+      "findingClass": "Alert",
+      "name": "Basic Test Finding",
+      "description": "A basic finding for testing core operations",
+      "severity": "High",
+      "status": "New",
+      "accountId": "acc-test-001",
+      "customerId": "cust-test-001",
+      "createdOn": "2024-01-01T00:00:00Z",
+      "updatedOn": "2024-01-01T00:00:00Z",
+      "deletedOn": null,
+      "tags": [],
+      "relationships": [],
+      "properties": {}
+    },
+    "findingWithTags": {
+      "id": "23456789-2345-2345-2345-234567890123",
+      "findingClass": "Event",
+      "name": "Tagged Test Finding",
+      "description": "A finding with tags for testing tag operations",
+      "severity": "Medium",
+      "status": "InProgress",
+      "accountId": "acc-test-001",
+      "customerId": "cust-test-001",
+      "createdOn": "2024-01-01T00:00:00Z",
+      "updatedOn": "2024-01-02T00:00:00Z",
+      "deletedOn": null,
+      "tags": ["test", "tagged", "mock-data"],
+      "relationships": [],
+      "properties": {}
+    },
+    "findingWithRelationships": {
+      "id": "34567890-3456-3456-3456-345678901234",
+      "findingClass": "Incident",
+      "name": "Related Test Finding",
+      "description": "A finding with relationships for testing relationship operations",
+      "severity": "Critical",
+      "status": "InProgress",
+      "accountId": "acc-test-001",
+      "customerId": "cust-test-001",
+      "createdOn": "2024-01-01T00:00:00Z",
+      "updatedOn": "2024-01-03T00:00:00Z",
+      "deletedOn": null,
+      "tags": ["test", "related"],
+      "relationships": [
+        {
+          "type": "RELATED_TO",
+          "sourceId": "34567890-3456-3456-3456-345678901234",
+          "targetId": "45678901-4567-4567-4567-456789012345",
+          "properties": {
+            "relationshipType": "parent"
+          }
+        }
+      ],
+      "properties": {}
+    },
+    "findingWithCustomProperties": {
+      "id": "45678901-4567-4567-4567-456789012345",
+      "findingClass": "Alert",
+      "name": "Custom Properties Finding",
+      "description": "A finding with custom properties for testing property handling",
+      "severity": "Low",
+      "status": "Resolved",
+      "accountId": "acc-test-001",
+      "customerId": "cust-test-001",
+      "createdOn": "2024-01-01T00:00:00Z",
+      "updatedOn": "2024-01-04T00:00:00Z",
+      "deletedOn": null,
+      "tags": ["test", "custom-props"],
+      "relationships": [],
+      "properties": {
+        "customField1": "value1",
+        "customField2": 123,
+        "customField3": {
+          "nestedField": "nestedValue"
+        },
+        "customArray": ["item1", "item2"]
+      }
+    },
+    "findingList": [
+      {
+        "id": "56789012-5678-5678-5678-567890123456",
+        "findingClass": "Alert",
+        "name": "List Finding 1",
+        "severity": "High",
+        "status": "New",
+        "createdOn": "2024-01-01T00:00:00Z"
+      },
+      {
+        "id": "67890123-6789-6789-6789-678901234567",
+        "findingClass": "Event",
+        "name": "List Finding 2",
+        "severity": "Medium",
+        "status": "InProgress",
+        "createdOn": "2024-01-02T00:00:00Z"
+      },
+      {
+        "id": "78901234-7890-7890-7890-789012345678",
+        "findingClass": "Incident",
+        "name": "List Finding 3",
+        "severity": "Critical",
+        "status": "Resolved",
+        "createdOn": "2024-01-03T00:00:00Z"
+      }
+    ]
+  }
+}
