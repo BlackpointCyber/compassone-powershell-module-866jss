@@ -1,0 +1,27 @@
+# Base PowerShell image with full feature support
+FROM mcr.microsoft.com/powershell:7.3
+
+# Container metadata
+LABEL maintainer="Blackpoint" \
+      description="Build container for PSCompassOne PowerShell module with comprehensive build tools" \
+      version="1.0.0"
+
+# Environment configuration
+ENV POWERSHELL_VERSION=7.3 \
+    POWERSHELL_TELEMETRY_OPTOUT=1
+
+# Install required PowerShell modules for build process
+RUN pwsh -NoProfile -Command \
+    Install-Module -Name psake -Force -Scope AllUsers -RequiredVersion 4.9.0 && \
+    Install-Module -Name PSScriptAnalyzer -Force -Scope AllUsers -RequiredVersion 1.20.0 && \
+    Install-Module -Name platyPS -Force -Scope AllUsers -RequiredVersion 0.14.2 && \
+    Install-Module -Name Microsoft.PowerShell.SecretStore -Force -Scope AllUsers -RequiredVersion 1.0.6
+
+# Set working directory for build process
+WORKDIR /build
+
+# Mount point for source code and build artifacts
+VOLUME /build
+
+# Default command to execute build script
+CMD ["pwsh", "-NoProfile", "-Command", "./infrastructure/scripts/build.ps1"]
