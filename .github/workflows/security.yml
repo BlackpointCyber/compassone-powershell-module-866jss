@@ -1,0 +1,171 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0'  # Run weekly on Sundays
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+  id-token: write
+
+env:
+  SECURITY_LEVEL: High
+  COMPLIANCE_MODE: Strict
+  VALIDATION_MODE: Enhanced
+
+jobs:
+  security_scan:
+    name: Enhanced Security Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup PowerShell
+        uses: PowerShell/PowerShell@v1
+        with:
+          pwsh-version: '7.2'
+
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          Install-Module -Name PSScriptAnalyzer -RequiredVersion 1.20.0 -Force
+          Install-Module -Name Microsoft.PowerShell.SecretStore -RequiredVersion 1.0.6 -Force
+          Install-Module -Name platyPS -RequiredVersion 0.14.2 -Force
+
+      - name: Run PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          $results = Invoke-ScriptAnalyzer -Path . -Recurse -Settings PSGallery `
+            -IncludeRule PSAvoidUsingPlainTextForPassword,PSUsePSCredentialType,PSAvoidUsingConvertToSecureStringWithPlainText `
+            -ReportSummary
+          if ($results.Severity -contains 'Error') {
+            throw "PSScriptAnalyzer found critical security issues"
+          }
+          $results | ConvertTo-Json | Out-File security-scan.sarif
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: powershell
+          config-file: ./.github/codeql/codeql-config.yml
+
+      - name: Run CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:powershell"
+
+      - name: Run Super-Linter
+        uses: github/super-linter@v4
+        env:
+          VALIDATE_ALL_CODEBASE: true
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_POWERSHELL: true
+          POWERSHELL_STRICT_MODE: true
+
+      - name: Validate Security Controls
+        shell: pwsh
+        run: |
+          $securityConfig = Get-Content -Path ./infrastructure/config/security.settings.json | ConvertFrom-Json
+          $results = . ./infrastructure/scripts/validate.ps1
+          if (-not $results.SecurityCompliance.Result) {
+            throw "Security compliance validation failed: $($results.SecurityCompliance.Findings -join ', ')"
+          }
+
+      - name: Verify Compliance Requirements
+        shell: pwsh
+        run: |
+          $complianceResults = @{
+            TLS = $securityConfig.transportSecurity.minimumTlsVersion -eq '1.2'
+            HTTPS = $securityConfig.transportSecurity.enforceHttps
+            TokenValidation = $securityConfig.authentication.tokenValidation.enabled
+            SecretStore = $securityConfig.authentication.secretStore.required
+            AuditLogging = $securityConfig.auditLogging.enabled
+          }
+          if ($complianceResults.Values -contains $false) {
+            throw "Compliance requirements not met"
+          }
+
+  vulnerability_scan:
+    name: Advanced Vulnerability Assessment
+    runs-on: ubuntu-latest
+    needs: security_scan
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PowerShell
+        uses: PowerShell/PowerShell@v1
+        with:
+          pwsh-version: '7.2'
+
+      - name: Scan Dependencies
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+
+      - name: Validate Secure Configurations
+        shell: pwsh
+        run: |
+          $securityConfig = Get-Content -Path ./infrastructure/config/security.settings.json | ConvertFrom-Json
+          
+          # Validate encryption settings
+          if ($securityConfig.dataProtection.encryption.algorithm -ne 'AES-256') {
+            throw "Encryption algorithm must be AES-256"
+          }
+          
+          # Validate hash verification
+          if (-not $securityConfig.dataProtection.hashVerification.validateResponses) {
+            throw "Response hash verification must be enabled"
+          }
+
+      - name: Check HTTPS Enforcement
+        shell: pwsh
+        run: |
+          $config = Get-Content -Path ./infrastructure/config/security.settings.json | ConvertFrom-Json
+          if (-not $config.transportSecurity.enforceHttps) {
+            throw "HTTPS enforcement must be enabled"
+          }
+          if ($config.transportSecurity.secureProtocols -notcontains 'TLS1.2') {
+            throw "TLS 1.2 must be supported"
+          }
+
+      - name: Validate Credential Storage
+        shell: pwsh
+        run: |
+          $config = Get-Content -Path ./infrastructure/config/security.settings.json | ConvertFrom-Json
+          if (-not $config.authentication.secretStore.required) {
+            throw "SecretStore usage must be required"
+          }
+
+      - name: Generate Security Report
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: security-scan.sarif
+          category: security-scan
+
+      - name: Upload Vulnerability Report
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: vulnerability-scan.sarif
+          category: vulnerability-scan
+
+      - name: Upload Compliance Report
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: compliance-scan.sarif
+          category: compliance-scan
