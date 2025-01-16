@@ -1,0 +1,117 @@
+name: build
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  POWERSHELL_TELEMETRY_OPTOUT: true
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+        powershell-version: ['5.1', '7.2']
+      fail-fast: false
+
+    runs-on: ${{ matrix.os }}
+    
+    name: Build & Test (PS ${{ matrix.powershell-version }} on ${{ matrix.os }})
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Setup PowerShell
+        shell: pwsh
+        run: |
+          if ($PSVersionTable.PSVersion.Major -ne '${{ matrix.powershell-version }}') {
+            if ('${{ matrix.powershell-version }}' -eq '5.1') {
+              Write-Host "PowerShell 5.1 is only available on Windows"
+              exit 0
+            }
+            $url = "https://github.com/PowerShell/PowerShell/releases/download/v${{ matrix.powershell-version }}/powershell-${{ matrix.powershell-version }}-win-x64.zip"
+            Invoke-WebRequest -Uri $url -OutFile pwsh.zip
+            Expand-Archive pwsh.zip -DestinationPath $env:TEMP\pwsh
+          }
+
+      - name: Install Dependencies
+        shell: pwsh
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module -Name PSScriptAnalyzer -Force
+          Install-Module -Name Pester -MinimumVersion 5.3.0 -Force
+          Install-Module -Name platyPS -Force
+          Install-Module -Name PSake -Force
+          ./infrastructure/scripts/install-dependencies.ps1
+
+      - name: Build Module
+        shell: pwsh
+        run: |
+          ./infrastructure/scripts/build.ps1
+        env:
+          BUILD_CONFIG: Release
+
+      - name: Run Static Analysis
+        shell: pwsh
+        run: |
+          $results = Invoke-ScriptAnalyzer -Path ./src -Recurse
+          $results | Format-Table -AutoSize
+          if ($results) { throw "PSScriptAnalyzer found issues" }
+
+      - name: Run Tests
+        shell: pwsh
+        run: |
+          Invoke-Psake -buildFile ./src/test/psake.build.ps1 -taskList Test
+        env:
+          TEST_ENVIRONMENT: CI
+
+      - name: Generate Coverage Report
+        shell: pwsh
+        run: |
+          Invoke-Psake -buildFile ./src/test/psake.build.ps1 -taskList Coverage
+        env:
+          COVERAGE_THRESHOLD: 100
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results-${{ matrix.os }}-ps${{ matrix.powershell-version }}
+          path: src/test/test-results
+          retention-days: 30
+
+      - name: Upload Coverage Report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report-${{ matrix.os }}-ps${{ matrix.powershell-version }}
+          path: src/test/coverage
+          retention-days: 30
+
+      - name: Package Module
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        shell: pwsh
+        run: |
+          $version = (Get-Content ./infrastructure/config/build.settings.json | ConvertFrom-Json).Version
+          Compress-Archive -Path ./out/PSCompassOne/* -DestinationPath ./out/PSCompassOne-$version.zip
+
+      - name: Upload Module Package
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v3
+        with:
+          name: PSCompassOne-package
+          path: ./out/PSCompassOne-*.zip
+          retention-days: 30
