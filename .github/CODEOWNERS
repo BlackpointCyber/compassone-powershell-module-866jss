@@ -1,0 +1,28 @@
+* @blackpoint/pscompassone-maintainers
+
+# Test files and configurations
+/src/test/** @blackpoint/pscompassone-test-team
+
+# Core PowerShell module components
+/src/core/** @blackpoint/pscompassone-powershell-reviewers
+
+# API integration components (requires both PowerShell and security review)
+/src/api/** @blackpoint/pscompassone-powershell-reviewers @blackpoint/pscompassone-security
+
+# Infrastructure and deployment configurations
+/infrastructure/** @blackpoint/pscompassone-devops
+
+# GitHub Actions workflow configurations
+/.github/workflows/* @blackpoint/pscompassone-devops
+
+# Security documentation and policies
+/SECURITY.md @blackpoint/pscompassone-security
+
+# All PowerShell script files
+*.ps1 @blackpoint/pscompassone-powershell-reviewers
+
+# Authentication and authorization components
+**/auth/** @blackpoint/pscompassone-security
+
+# Configuration files requiring both security and DevOps review
+**/config/** @blackpoint/pscompassone-security @blackpoint/pscompassone-devops
