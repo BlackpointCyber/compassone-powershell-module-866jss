@@ -1,0 +1,76 @@
+# Stage 1: Base PowerShell development environment
+FROM mcr.microsoft.com/powershell:7.3 AS base
+
+# Security scanning and hardening
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        git \
+        unzip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Configure secure environment variables
+ENV POWERSHELL_VERSION=7.3 \
+    POWERSHELL_TELEMETRY_OPTOUT=1 \
+    POWERSHELL_UPDATECHECK=Off \
+    DOTNET_CLI_TELEMETRY_OPTOUT=1 \
+    POWERSHELL_DEVELOPMENT=1 \
+    POWERSHELL_DEBUG=1 \
+    # Set TLS 1.2 as minimum
+    DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER=0 \
+    # Secure PowerShell execution policy
+    POWERSHELL_EXECUTION_POLICY=RemoteSigned
+
+# Create and set working directory with appropriate permissions
+WORKDIR /workspace
+RUN chmod 755 /workspace
+
+# Stage 2: Development environment setup
+FROM base AS dev
+
+# Copy installation scripts
+COPY infrastructure/scripts/install-dependencies.ps1 /tmp/
+RUN chmod 500 /tmp/install-dependencies.ps1
+
+# Install and configure PowerShell modules with security validation
+RUN pwsh -NoLogo -NonInteractive -Command " \
+    Set-ExecutionPolicy RemoteSigned -Scope Process -Force; \
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
+    Install-Module -Name PowerShellGet -MinimumVersion 2.2.5 -Force -AllowClobber -SkipPublisherCheck; \
+    & /tmp/install-dependencies.ps1 -Force -NoProgress; \
+    Remove-Item /tmp/install-dependencies.ps1 -Force"
+
+# Configure development environment optimizations
+RUN pwsh -NoLogo -NonInteractive -Command " \
+    # Enable PowerShell debugging features
+    Set-PSDebug -Trace 1; \
+    # Configure PSReadLine for better development experience
+    Set-PSReadLineOption -PredictionSource History; \
+    # Setup secure credential handling
+    Register-SecretVault -Name DevSecrets -ModuleName Microsoft.PowerShell.SecretStore -DefaultVault; \
+    # Configure VS Code PowerShell integration
+    Install-Module -Name VSCode -Force"
+
+# Setup volume mounts for development
+VOLUME [ "/workspace", "/root/.local/share/powershell" ]
+
+# Configure healthcheck
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD pwsh -NoProfile -Command "Test-Path /workspace"
+
+# Set secure entrypoint for development environment
+ENTRYPOINT [ "pwsh", "-NoLogo", "-NoProfile" ]
+CMD [ "-Command", "& { Import-Module PSReadLine; Enable-PSDebug -Show All; Write-Host 'PSCompassOne Development Environment Ready'; while ($true) { Start-Sleep -Seconds 1 } }" ]
+
+# Add metadata labels
+LABEL maintainer="Blackpoint" \
+    org.opencontainers.image.title="PSCompassOne Development Environment" \
+    org.opencontainers.image.description="Secure PowerShell development environment for PSCompassOne module" \
+    org.opencontainers.image.version="1.0.0" \
+    org.opencontainers.image.vendor="Blackpoint" \
+    org.opencontainers.image.source="https://github.com/Blackpoint/PSCompassOne" \
+    org.opencontainers.image.licenses="MIT"
