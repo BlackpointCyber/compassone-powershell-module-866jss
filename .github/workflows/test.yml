@@ -1,0 +1,80 @@
+name: Test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+  POWERSHELL_TELEMETRY_OPTOUT: '1'
+  PESTER_TEST_OUTPUT: './test-results'
+  CODE_COVERAGE_OUTPUT: './coverage'
+  PESTER_VERSION: '5.3.0'
+  PSAKE_VERSION: '4.9.0'
+  TEST_TIMEOUT_MINUTES: '30'
+  ARTIFACT_RETENTION_DAYS: '30'
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: ${{ env.TEST_TIMEOUT_MINUTES }}
+    
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        powershell-version: ['5.1', '7.0', '7.2']
+      fail-fast: false
+      max-parallel: 9
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup PowerShell
+        uses: microsoft/powershell@v1
+        with:
+          powershell-version: ${{ matrix.powershell-version }}
+
+      - name: Cache PowerShell Modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.local/share/powershell/Modules
+          key: ps-modules-${{ runner.os }}-${{ matrix.powershell-version }}-${{ hashFiles('**/requirements.psd1') }}
+
+      - name: Install Dependencies
+        shell: pwsh
+        run: |
+          Install-Module -Name Pester -RequiredVersion ${{ env.PESTER_VERSION }} -Force -SkipPublisherCheck
+          Install-Module -Name psake -RequiredVersion ${{ env.PSAKE_VERSION }} -Force -SkipPublisherCheck
+
+      - name: Run Tests
+        shell: pwsh
+        run: |
+          Import-Module Pester
+          Import-Module psake
+          Invoke-psake ./src/test/psake.build.ps1 -taskList Test -parameters @{
+              TestOutput = $env:PESTER_TEST_OUTPUT
+              CoverageOutput = $env:CODE_COVERAGE_OUTPUT
+              OS = '${{ matrix.os }}'
+              PSVersion = '${{ matrix.powershell-version }}'
+          }
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results-${{ matrix.os }}-ps${{ matrix.powershell-version }}
+          path: ${{ env.PESTER_TEST_OUTPUT }}
+          retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
+
+      - name: Upload Coverage Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-results-${{ matrix.os }}-ps${{ matrix.powershell-version }}
+          path: ${{ env.CODE_COVERAGE_OUTPUT }}
+          retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
