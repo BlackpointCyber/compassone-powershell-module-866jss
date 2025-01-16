@@ -1,0 +1,271 @@
+{
+  "invalidAssets": {
+    "missingRequiredFields": {
+      "description": "Assets missing required fields for testing 400 Bad Request responses",
+      "cases": [
+        {
+          "name": "Missing assetClass",
+          "data": {
+            "name": "TestDevice",
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "00000000-0000-0000-0000-000000000003"
+          }
+        },
+        {
+          "name": "Missing name",
+          "data": {
+            "assetClass": "DEVICE",
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "00000000-0000-0000-0000-000000000003"
+          }
+        },
+        {
+          "name": "Empty name",
+          "data": {
+            "assetClass": "DEVICE",
+            "name": "",
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "00000000-0000-0000-0000-000000000003"
+          }
+        },
+        {
+          "name": "Missing accountId",
+          "data": {
+            "assetClass": "DEVICE",
+            "name": "TestDevice",
+            "customerId": "00000000-0000-0000-0000-000000000003"
+          }
+        },
+        {
+          "name": "Missing customerId",
+          "data": {
+            "assetClass": "DEVICE",
+            "name": "TestDevice",
+            "accountId": "00000000-0000-0000-0000-000000000002"
+          }
+        }
+      ]
+    },
+    "invalidDataTypes": {
+      "description": "Assets with incorrect data types for testing type validation",
+      "cases": [
+        {
+          "name": "Numeric name",
+          "data": {
+            "assetClass": "DEVICE",
+            "name": 12345,
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "00000000-0000-0000-0000-000000000003"
+          }
+        },
+        {
+          "name": "Boolean assetClass",
+          "data": {
+            "assetClass": true,
+            "name": "TestDevice",
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "00000000-0000-0000-0000-000000000003"
+          }
+        },
+        {
+          "name": "Array as name",
+          "data": {
+            "assetClass": "DEVICE",
+            "name": ["Invalid", "Name"],
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "00000000-0000-0000-0000-000000000003"
+          }
+        },
+        {
+          "name": "Object as name",
+          "data": {
+            "assetClass": "DEVICE",
+            "name": {"value": "Invalid"},
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "00000000-0000-0000-0000-000000000003"
+          }
+        }
+      ]
+    },
+    "invalidEnumValues": {
+      "description": "Assets with invalid enumeration values",
+      "cases": [
+        {
+          "name": "Invalid assetClass",
+          "data": {
+            "assetClass": "INVALID_TYPE",
+            "name": "TestDevice",
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "00000000-0000-0000-0000-000000000003"
+          }
+        },
+        {
+          "name": "Invalid status",
+          "data": {
+            "assetClass": "DEVICE",
+            "name": "TestDevice",
+            "status": "INVALID_STATUS",
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "00000000-0000-0000-0000-000000000003"
+          }
+        },
+        {
+          "name": "Lowercase assetClass",
+          "data": {
+            "assetClass": "device",
+            "name": "TestDevice",
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "00000000-0000-0000-0000-000000000003"
+          }
+        }
+      ]
+    },
+    "invalidUuidFormats": {
+      "description": "Assets with malformed UUID values",
+      "cases": [
+        {
+          "name": "Invalid accountId format",
+          "data": {
+            "assetClass": "DEVICE",
+            "name": "TestDevice",
+            "accountId": "invalid-uuid-format",
+            "customerId": "00000000-0000-0000-0000-000000000003"
+          }
+        },
+        {
+          "name": "Invalid customerId format",
+          "data": {
+            "assetClass": "DEVICE",
+            "name": "TestDevice",
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "not-a-uuid"
+          }
+        },
+        {
+          "name": "Short UUID format",
+          "data": {
+            "assetClass": "DEVICE",
+            "name": "TestDevice",
+            "accountId": "12345",
+            "customerId": "00000000-0000-0000-0000-000000000003"
+          }
+        },
+        {
+          "name": "Missing UUID segments",
+          "data": {
+            "assetClass": "DEVICE",
+            "name": "TestDevice",
+            "accountId": "00000000-0000-0000-0000",
+            "customerId": "00000000-0000-0000-0000-000000000003"
+          }
+        }
+      ]
+    },
+    "invalidPropertyTypes": {
+      "description": "Assets with invalid property value types",
+      "cases": [
+        {
+          "name": "Array as property value",
+          "data": {
+            "assetClass": "DEVICE",
+            "name": "TestDevice",
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "00000000-0000-0000-0000-000000000003",
+            "properties": {
+              "os": ["Windows", "Linux"]
+            }
+          }
+        },
+        {
+          "name": "Null property value",
+          "data": {
+            "assetClass": "DEVICE",
+            "name": "TestDevice",
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "00000000-0000-0000-0000-000000000003",
+            "properties": {
+              "os": null
+            }
+          }
+        },
+        {
+          "name": "Invalid property structure",
+          "data": {
+            "assetClass": "DEVICE",
+            "name": "TestDevice",
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "00000000-0000-0000-0000-000000000003",
+            "properties": ["invalid", "structure"]
+          }
+        },
+        {
+          "name": "Nested invalid property",
+          "data": {
+            "assetClass": "DEVICE",
+            "name": "TestDevice",
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "00000000-0000-0000-0000-000000000003",
+            "properties": {
+              "custom": {
+                "nested": {
+                  "value": ["invalid"]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "invalidTagFormats": {
+      "description": "Assets with invalid tag formats",
+      "cases": [
+        {
+          "name": "Non-string tag values",
+          "data": {
+            "assetClass": "DEVICE",
+            "name": "TestDevice",
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "00000000-0000-0000-0000-000000000003",
+            "tags": [123, true, null]
+          }
+        },
+        {
+          "name": "Empty tag values",
+          "data": {
+            "assetClass": "DEVICE",
+            "name": "TestDevice",
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "00000000-0000-0000-0000-000000000003",
+            "tags": ["", "  ", null]
+          }
+        },
+        {
+          "name": "Invalid tag structure",
+          "data": {
+            "assetClass": "DEVICE",
+            "name": "TestDevice",
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "00000000-0000-0000-0000-000000000003",
+            "tags": {
+              "tag1": "value1",
+              "tag2": "value2"
+            }
+          }
+        },
+        {
+          "name": "Oversized tag values",
+          "data": {
+            "assetClass": "DEVICE",
+            "name": "TestDevice",
+            "accountId": "00000000-0000-0000-0000-000000000002",
+            "customerId": "00000000-0000-0000-0000-000000000003",
+            "tags": [
+              "ThisTagIsWayTooLongAndExceedsTheMaximumAllowedLengthForATagValueInTheCompassOnePlatformAndShouldResultInAValidationError",
+              "AnotherVeryLongTagThatExceedsTheMaximumAllowedLengthAndShouldAlsoTriggerAValidationErrorWhenProcessedByTheSystem"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
