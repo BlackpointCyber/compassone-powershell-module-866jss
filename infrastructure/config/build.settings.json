@@ -1,0 +1,93 @@
+{
+  "ModuleName": "PSCompassOne",
+  "Version": "1.0.0",
+  "Author": "Blackpoint",
+  "CompanyName": "Blackpoint",
+  "Description": "PowerShell module for programmatic interaction with Blackpoint's CompassOne cyber security platform",
+  "PowerShellVersion": "5.1",
+  "RequiredModules": [
+    {
+      "Name": "Microsoft.PowerShell.SecretStore",
+      "Version": "1.0.6"
+    },
+    {
+      "Name": "PSScriptAnalyzer",
+      "Version": "1.20.0"
+    },
+    {
+      "Name": "platyPS",
+      "Version": "0.14.2"
+    }
+  ],
+  "BuildOutputPath": "build",
+  "SourcePath": "src",
+  "DocsPath": "docs",
+  "TestPath": "src/test",
+  "BuildConfiguration": {
+    "Type": "Release",
+    "CrossPlatform": true,
+    "OptimizationLevel": "Maximum",
+    "DebugSymbols": false,
+    "TestCoverage": {
+      "Required": true,
+      "MinimumPercent": 100
+    }
+  },
+  "CodeSigning": {
+    "Required": true,
+    "Type": "CodeSigning",
+    "StoreLocation": "CurrentUser",
+    "StoreName": "My",
+    "ThumbprintEnvironmentVariable": "CODE_SIGNING_THUMBPRINT",
+    "TimestampServer": "http://timestamp.digicert.com",
+    "HashAlgorithm": "SHA256"
+  },
+  "Documentation": {
+    "GenerateMarkdown": true,
+    "GenerateMAML": true,
+    "OutputPath": "docs",
+    "OnlineVersionUrl": "https://github.com/Blackpoint/PSCompassOne/docs",
+    "HelpVersion": "1.0.0",
+    "ExternalHelpPath": "en-US",
+    "Examples": {
+      "Path": "examples",
+      "IncludeInModule": true
+    }
+  },
+  "Distribution": {
+    "PowerShellGallery": {
+      "Enabled": true,
+      "ApiKeyEnvironmentVariable": "PSGALLERY_API_KEY",
+      "RequireLicenseAcceptance": true,
+      "Tags": [
+        "Security",
+        "CompassOne",
+        "API",
+        "Blackpoint"
+      ],
+      "ProjectUri": "https://github.com/Blackpoint/PSCompassOne",
+      "LicenseUri": "https://github.com/Blackpoint/PSCompassOne/LICENSE",
+      "IconUri": "https://github.com/Blackpoint/PSCompassOne/icon.png"
+    },
+    "GitHubPackages": {
+      "Enabled": true,
+      "ApiKeyEnvironmentVariable": "GITHUB_TOKEN",
+      "Repository": "Blackpoint/PSCompassOne",
+      "RegistryUrl": "https://nuget.pkg.github.com/Blackpoint/index.json",
+      "Visibility": "public"
+    },
+    "Enterprise": {
+      "Enabled": false,
+      "RepositoryPath": "",
+      "RequireCodeSigning": true,
+      "RequireApproval": true
+    }
+  },
+  "Security": {
+    "MinimumTLSVersion": "1.2",
+    "RequireCodeSigning": true,
+    "RequireSecureCredentials": true,
+    "AllowPrerelease": false,
+    "ValidateHashOnBuild": true
+  }
+}
