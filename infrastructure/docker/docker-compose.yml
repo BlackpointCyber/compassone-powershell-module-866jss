@@ -1,0 +1,135 @@
+version: '3.8'
+
+services:
+  # Development environment with live reload and debugging support
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        POWERSHELL_VERSION: '7.3'
+        DEBIAN_FRONTEND: 'noninteractive'
+    volumes:
+      - ../../src:/workspace:cached
+      - ~/.pscompassone:/root/.pscompassone:bind
+    environment:
+      - POWERSHELL_VERSION=7.3
+      - POWERSHELL_TELEMETRY_OPTOUT=1
+      - DOTNET_CLI_TELEMETRY_OPTOUT=1
+      - PSMODULE_DEBUG=true
+      - TZ=UTC
+    working_dir: /workspace
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "pwsh", "-c", "Test-Path /workspace"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - pscompassone
+
+  # PowerShell 5.1 test environment for Windows-specific testing
+  test-ps5:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+      args:
+        POWERSHELL_VERSION: '5.1'
+        TARGET_OS: 'windows'
+    volumes:
+      - ./test-results:/tests/test-results:bind
+      - ./coverage:/tests/coverage:bind
+    mem_limit: 2GB
+    cpus: 2
+    environment:
+      - PESTER_TEST_GROUP=Windows
+      - POWERSHELL_TELEMETRY_OPTOUT=1
+      - TEST_PLATFORM=Windows
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "powershell", "-c", "$PSVersionTable.PSVersion.Major -eq 5"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - pscompassone
+
+  # PowerShell 7.x test environment for cross-platform testing
+  test-ps7:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+      args:
+        POWERSHELL_VERSION: '7.3'
+        TARGET_OS: 'linux'
+    volumes:
+      - ./test-results:/tests/test-results:bind
+      - ./coverage:/tests/coverage:bind
+    mem_limit: 2GB
+    cpus: 2
+    environment:
+      - PESTER_TEST_GROUP=Linux
+      - POWERSHELL_TELEMETRY_OPTOUT=1
+      - TEST_PLATFORM=Linux
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "pwsh", "-c", "$PSVersionTable.PSVersion.Major -eq 7"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - pscompassone
+
+  # Module build environment with security enhancements
+  build:
+    build:
+      context: .
+      dockerfile: Dockerfile.build
+      args:
+        POWERSHELL_VERSION: '7.3'
+        DEBIAN_FRONTEND: 'noninteractive'
+    volumes:
+      - ../../:/build:cached
+    environment:
+      - POWERSHELL_VERSION=7.3
+      - POWERSHELL_TELEMETRY_OPTOUT=1
+      - DOTNET_CLI_TELEMETRY_OPTOUT=1
+      - BUILD_CONFIGURATION=Release
+      - TZ=UTC
+    working_dir: /build
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "pwsh", "-c", "Test-Path /build"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - pscompassone
+
+volumes:
+  test-results:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./test-results
+  coverage:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./coverage
+
+networks:
+  pscompassone:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: pscompassone0
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
