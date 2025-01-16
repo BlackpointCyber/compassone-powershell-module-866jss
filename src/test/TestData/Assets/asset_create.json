@@ -1,0 +1,90 @@
+{
+  "validAssetCreate": {
+    "minimalValid": {
+      "assetClass": "DEVICE",
+      "name": "TestDevice",
+      "accountId": "00000000-0000-0000-0000-000000000002",
+      "customerId": "00000000-0000-0000-0000-000000000003"
+    },
+    "fullValid": {
+      "assetClass": "DEVICE",
+      "name": "TestDeviceFull",
+      "accountId": "00000000-0000-0000-0000-000000000002",
+      "customerId": "00000000-0000-0000-0000-000000000003",
+      "status": "Active",
+      "properties": {
+        "os": "Windows Server 2019",
+        "ip": "192.168.1.100",
+        "location": "US-East"
+      },
+      "tags": [
+        "Production",
+        "WebServer",
+        "Critical"
+      ]
+    },
+    "deviceValid": {
+      "assetClass": "DEVICE",
+      "name": "TestDeviceComplete",
+      "accountId": "00000000-0000-0000-0000-000000000002",
+      "customerId": "00000000-0000-0000-0000-000000000003",
+      "status": "Active",
+      "properties": {
+        "os": "Windows Server 2019",
+        "ip": "192.168.1.100",
+        "location": "US-East",
+        "version": "1.2.3",
+        "environment": "Production"
+      },
+      "tags": [
+        "Production",
+        "Critical"
+      ]
+    },
+    "containerValid": {
+      "assetClass": "CONTAINER",
+      "name": "TestContainer",
+      "accountId": "00000000-0000-0000-0000-000000000002",
+      "customerId": "00000000-0000-0000-0000-000000000003",
+      "status": "Running",
+      "properties": {
+        "image": "nginx:latest",
+        "port": "80",
+        "environment": "Production"
+      },
+      "tags": [
+        "Container",
+        "Web"
+      ]
+    }
+  },
+  "invalidAssetCreate": {
+    "missingRequired": {
+      "assetClass": "DEVICE",
+      "name": "TestDevice"
+    },
+    "invalidAssetClass": {
+      "assetClass": "INVALID",
+      "name": "TestDevice",
+      "accountId": "00000000-0000-0000-0000-000000000002",
+      "customerId": "00000000-0000-0000-0000-000000000003"
+    },
+    "invalidUuid": {
+      "assetClass": "DEVICE",
+      "name": "TestDevice",
+      "accountId": "invalid-uuid",
+      "customerId": "00000000-0000-0000-0000-000000000003"
+    },
+    "invalidProperties": {
+      "assetClass": "DEVICE",
+      "name": "TestDevice",
+      "accountId": "00000000-0000-0000-0000-000000000002",
+      "customerId": "00000000-0000-0000-0000-000000000003",
+      "properties": {
+        "os": "",
+        "ip": "invalid-ip",
+        "version": "invalid.version"
+      }
+    }
+  }
+}
