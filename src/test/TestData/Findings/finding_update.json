@@ -1,0 +1,77 @@
+{
+  "findingUpdateTemplates": {
+    "basicFindingUpdate": {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "findingClass": "Alert",
+      "name": "Updated Test Finding",
+      "description": "Updated description for test finding",
+      "severity": "High",
+      "status": "InProgress",
+      "updatedOn": "2024-01-20T15:30:00Z"
+    },
+    "findingUpdateWithTags": {
+      "id": "00000000-0000-0000-0000-000000000002",
+      "findingClass": "Event",
+      "name": "Tagged Test Finding Update",
+      "description": "Test finding update with tags",
+      "severity": "Medium",
+      "status": "InProgress",
+      "tags": [
+        "Updated",
+        "Testing",
+        "ModifiedTag"
+      ],
+      "updatedOn": "2024-01-20T15:30:00Z"
+    },
+    "findingUpdateWithRelationships": {
+      "id": "00000000-0000-0000-0000-000000000003",
+      "findingClass": "Incident",
+      "name": "Related Test Finding Update",
+      "description": "Test finding update with relationships",
+      "severity": "Critical",
+      "status": "InProgress",
+      "relationships": [
+        {
+          "type": "RelatedTo",
+          "targetId": "00000000-0000-0000-0000-000000000004",
+          "direction": "Outbound"
+        }
+      ],
+      "updatedOn": "2024-01-20T15:30:00Z"
+    },
+    "findingUpdateWithCustomProperties": {
+      "id": "00000000-0000-0000-0000-000000000005",
+      "findingClass": "Alert",
+      "name": "Custom Properties Finding Update",
+      "description": "Test finding update with custom properties",
+      "severity": "Low",
+      "status": "InProgress",
+      "properties": {
+        "updatedSource": "UnitTest",
+        "modifiedBy": "TestUser",
+        "customField": "UpdatedValue"
+      },
+      "updatedOn": "2024-01-20T15:30:00Z"
+    }
+  },
+  "validationRules": {
+    "id": "Must be valid UUID format",
+    "findingClass": ["Alert", "Event", "Incident"],
+    "severity": ["Critical", "High", "Medium", "Low", "Info"],
+    "status": ["New", "InProgress", "Resolved", "Closed"],
+    "tags": {
+      "maxCount": 20,
+      "maxLength": 50
+    },
+    "relationships": {
+      "maxCount": 100,
+      "targetId": "Must be valid UUID format"
+    },
+    "properties": {
+      "maxCount": 50
+    },
+    "timestamps": {
+      "updatedOn": "Must be valid ISO 8601 datetime string and after createdOn when present"
+    }
+  }
+}
