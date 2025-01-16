@@ -1,0 +1,50 @@
+{
+  "CodeCoverage": {
+    "Enabled": true,
+    "OutputFormat": [
+      "JaCoCo",
+      "CoverageGutters"
+    ],
+    "OutputPath": "./coverage",
+    "OutputEncoding": "UTF8",
+    "MinimumThreshold": 100,
+    "ExcludeTests": true,
+    "RecursePaths": true,
+    "ExcludePaths": [
+      "*.Tests.ps1",
+      "**/test/**",
+      "**/TestHelpers/**",
+      "**/Mocks/**"
+    ],
+    "IncludePaths": [
+      "*.ps1",
+      "*.psm1"
+    ]
+  },
+  "CoverageReport": {
+    "Enabled": true,
+    "Types": [
+      "Html",
+      "Xml"
+    ],
+    "Directory": "./coverage",
+    "Title": "PSCompassOne Code Coverage Report",
+    "BranchCoverage": true,
+    "LineCoverage": true,
+    "FunctionCoverage": true
+  },
+  "CoverageThresholds": {
+    "Line": 100,
+    "Branch": 100,
+    "Function": 100,
+    "File": 100
+  },
+  "CoverageOptions": {
+    "FailOnUnderThreshold": true,
+    "GenerateXmlReport": true,
+    "GenerateHtmlReport": true,
+    "ShowHitCommands": true,
+    "ShowMissedCommands": true,
+    "UseRelativePaths": true
+  }
+}
