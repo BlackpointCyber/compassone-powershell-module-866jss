@@ -1,0 +1,150 @@
+{
+  "standard_response": {
+    "items": [
+      {
+        "id": "00000000-0000-0000-0000-000000000001",
+        "assetClass": "DEVICE",
+        "name": "WebServer",
+        "accountId": "00000000-0000-0000-0000-000000000002",
+        "customerId": "00000000-0000-0000-0000-000000000003",
+        "status": "Active",
+        "createdOn": "2024-01-01T10:00:00Z",
+        "updatedOn": "2024-01-20T15:30:00Z",
+        "lastSeen": "2024-01-20T15:30:00Z",
+        "properties": {
+          "os": "Windows Server 2019",
+          "ip": "192.168.1.100",
+          "location": "US-East"
+        },
+        "tags": ["Production", "WebServer", "Critical"]
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000005",
+        "assetClass": "CONTAINER",
+        "name": "Container01",
+        "accountId": "00000000-0000-0000-0000-000000000002",
+        "customerId": "00000000-0000-0000-0000-000000000003",
+        "status": "Running",
+        "createdOn": "2024-01-01T11:00:00Z",
+        "updatedOn": "2024-01-20T15:30:00Z",
+        "lastSeen": "2024-01-20T15:30:00Z",
+        "properties": {
+          "image": "nginx:latest",
+          "podName": "web-pod-1",
+          "namespace": "production"
+        },
+        "tags": ["Production", "Container", "Web"]
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000009",
+        "assetClass": "DEVICE",
+        "name": "LinuxHost",
+        "accountId": "00000000-0000-0000-0000-000000000002",
+        "customerId": "00000000-0000-0000-0000-000000000003",
+        "status": "Active",
+        "createdOn": "2024-01-01T12:00:00Z",
+        "updatedOn": "2024-01-20T15:30:00Z",
+        "lastSeen": "2024-01-20T15:30:00Z",
+        "properties": {
+          "os": "Linux",
+          "ip": "192.168.1.101",
+          "location": "US-West"
+        },
+        "tags": ["Production", "Linux", "Host"]
+      }
+    ],
+    "totalItems": 243,
+    "pageSize": 50,
+    "pageNumber": 1
+  },
+  "error_scenarios": {
+    "invalid_page_size": {
+      "error": "InvalidArgument",
+      "message": "Page size must be between 1 and 100",
+      "status": 400
+    },
+    "unauthorized": {
+      "error": "Unauthorized",
+      "message": "Invalid or expired API token",
+      "status": 401
+    },
+    "not_found": {
+      "error": "NotFound",
+      "message": "No assets found for the specified criteria",
+      "status": 404
+    },
+    "rate_limit_exceeded": {
+      "error": "LimitsExceeded",
+      "message": "API rate limit exceeded. Please try again later.",
+      "status": 429
+    },
+    "server_error": {
+      "error": "InvalidOperation",
+      "message": "Internal server error occurred",
+      "status": 500
+    },
+    "service_unavailable": {
+      "error": "ConnectionError",
+      "message": "Service temporarily unavailable",
+      "status": 503
+    }
+  },
+  "validation_rules": {
+    "standard_fields": {
+      "items": "Required array of asset objects",
+      "totalItems": "Required number >= 0",
+      "pageSize": "Required number between 1-100",
+      "pageNumber": "Required number >= 1"
+    },
+    "asset_fields": {
+      "id": "Required UUID format ^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$",
+      "assetClass": "Required DEVICE|CONTAINER",
+      "name": "Required non-empty string",
+      "accountId": "Required UUID format",
+      "customerId": "Required UUID format",
+      "status": "Required string",
+      "createdOn": "Required ISO 8601 datetime",
+      "updatedOn": "Required ISO 8601 datetime",
+      "lastSeen": "Required ISO 8601 datetime"
+    },
+    "error_scenarios": {
+      "status_code": "Required number matching HTTP status codes",
+      "error": "Required string matching PowerShell error categories",
+      "message": "Required non-empty string"
+    }
+  },
+  "pagination_examples": {
+    "first_page": {
+      "pageSize": 50,
+      "pageNumber": 1,
+      "totalItems": 243
+    },
+    "middle_page": {
+      "pageSize": 50,
+      "pageNumber": 3,
+      "totalItems": 243
+    },
+    "last_page": {
+      "pageSize": 50,
+      "pageNumber": 5,
+      "totalItems": 243
+    },
+    "custom_page_size": {
+      "pageSize": 25,
+      "pageNumber": 1,
+      "totalItems": 243
+    },
+    "boundary_cases": {
+      "min_page_size": {
+        "pageSize": 1,
+        "pageNumber": 1,
+        "totalItems": 243
+      },
+      "max_page_size": {
+        "pageSize": 100,
+        "pageNumber": 1,
+        "totalItems": 243
+      }
+    }
+  }
+}
