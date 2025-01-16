@@ -1,0 +1,144 @@
+{
+  "testFindingTemplates": {
+    "basicFinding": {
+      "findingClass": "Alert",
+      "name": "Test Finding",
+      "description": "Test finding for validation",
+      "severity": "High",
+      "status": "New",
+      "accountId": "test-account-id",
+      "customerId": "test-customer-id"
+    },
+    "findingWithTags": {
+      "findingClass": "Event",
+      "name": "Tagged Test Finding",
+      "description": "Test finding with maximum tags",
+      "severity": "Medium",
+      "status": "New",
+      "accountId": "test-account-id",
+      "customerId": "test-customer-id",
+      "tags": [
+        "tag1", "tag2", "tag3", "tag4", "tag5",
+        "tag6", "tag7", "tag8", "tag9", "tag10",
+        "tag11", "tag12", "tag13", "tag14", "tag15",
+        "tag16", "tag17", "tag18", "tag19", "tag20",
+        "tag21", "tag22", "tag23", "tag24", "tag25",
+        "tag26", "tag27", "tag28", "tag29", "tag30",
+        "tag31", "tag32", "tag33", "tag34", "tag35",
+        "tag36", "tag37", "tag38", "tag39", "tag40",
+        "tag41", "tag42", "tag43", "tag44", "tag45",
+        "tag46", "tag47", "tag48", "tag49", "tag50"
+      ]
+    },
+    "findingWithRelationships": {
+      "findingClass": "Incident",
+      "name": "Related Test Finding",
+      "description": "Test finding with complex relationships",
+      "severity": "Critical",
+      "status": "New",
+      "accountId": "test-account-id",
+      "customerId": "test-customer-id",
+      "relationships": [
+        {
+          "type": "related_to",
+          "targetId": "12345678-1234-1234-1234-123456789012",
+          "targetType": "Asset",
+          "properties": {
+            "relationshipDescription": "Primary affected asset"
+          }
+        },
+        {
+          "type": "caused_by",
+          "targetId": "23456789-2345-2345-2345-234567890123",
+          "targetType": "Finding",
+          "properties": {
+            "relationshipDescription": "Parent finding"
+          }
+        }
+      ]
+    },
+    "findingEdgeCases": {
+      "maxLengthFields": {
+        "findingClass": "Alert",
+        "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "severity": "High",
+        "status": "New",
+        "accountId": "test-account-id",
+        "customerId": "test-customer-id"
+      },
+      "specialCharacters": {
+        "findingClass": "Event",
+        "name": "Test!@#$%^&*()",
+        "description": "Special chars: <>?:\"{}|+_",
+        "severity": "Medium",
+        "status": "New",
+        "accountId": "test-account-id",
+        "customerId": "test-customer-id"
+      },
+      "emptyOptionalFields": {
+        "findingClass": "Incident",
+        "name": "Empty Fields Test",
+        "description": "Testing with empty optional fields",
+        "severity": "Low",
+        "status": "New",
+        "accountId": "test-account-id",
+        "customerId": "test-customer-id",
+        "tags": [],
+        "relationships": [],
+        "properties": {}
+      },
+      "maxRelationships": {
+        "findingClass": "Alert",
+        "name": "Max Relationships Test",
+        "description": "Testing maximum number of relationships",
+        "severity": "Info",
+        "status": "New",
+        "accountId": "test-account-id",
+        "customerId": "test-customer-id",
+        "relationships": Array.from({length: 100}, (_, i) => ({
+          "type": "related_to",
+          "targetId": `${i}2345678-1234-1234-1234-12345678901${i}`,
+          "targetType": i % 2 === 0 ? "Asset" : "Finding",
+          "properties": {
+            "relationshipIndex": i
+          }
+        }))
+      }
+    },
+    "validationTestCases": {
+      "invalidFindingClass": {
+        "findingClass": "InvalidClass",
+        "name": "Invalid Class Test",
+        "description": "Testing invalid finding class validation",
+        "severity": "High",
+        "status": "New",
+        "accountId": "test-account-id",
+        "customerId": "test-customer-id"
+      },
+      "invalidSeverity": {
+        "findingClass": "Alert",
+        "name": "Invalid Severity Test",
+        "description": "Testing invalid severity validation",
+        "severity": "InvalidSeverity",
+        "status": "New",
+        "accountId": "test-account-id",
+        "customerId": "test-customer-id"
+      },
+      "invalidStatus": {
+        "findingClass": "Alert",
+        "name": "Invalid Status Test",
+        "description": "Testing invalid status validation",
+        "severity": "High",
+        "status": "InvalidStatus",
+        "accountId": "test-account-id",
+        "customerId": "test-customer-id"
+      },
+      "missingRequiredFields": {
+        "findingClass": "Alert",
+        "severity": "High",
+        "status": "New"
+      }
+    }
+  }
+}
