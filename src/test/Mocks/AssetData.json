@@ -1,0 +1,166 @@
+{
+  "singleAsset": {
+    "id": "00000000-0000-0000-0000-000000000001",
+    "assetClass": "DEVICE",
+    "name": "TestWebServer01",
+    "accountId": "00000000-0000-0000-0000-000000000002",
+    "customerId": "00000000-0000-0000-0000-000000000003",
+    "status": "Active",
+    "createdOn": "2024-01-01T00:00:00Z",
+    "updatedOn": "2024-01-20T15:30:00Z",
+    "lastSeen": "2024-01-20T15:30:00Z",
+    "properties": {
+      "os": "Windows Server 2019",
+      "ip": "192.168.1.100",
+      "location": "US-East",
+      "version": "1.2.3",
+      "custom": {
+        "environment": "Production",
+        "department": "IT",
+        "criticality": "High"
+      }
+    },
+    "tags": [
+      "Production",
+      "WebServer",
+      "Critical"
+    ],
+    "relationships": [
+      {
+        "id": "00000000-0000-0000-0000-000000000004",
+        "type": "DEPENDS_ON",
+        "direction": "OUTBOUND"
+      }
+    ]
+  },
+  "assetList": {
+    "items": [
+      {
+        "id": "00000000-0000-0000-0000-000000000001",
+        "assetClass": "DEVICE",
+        "name": "TestWebServer01",
+        "accountId": "00000000-0000-0000-0000-000000000002",
+        "customerId": "00000000-0000-0000-0000-000000000003",
+        "status": "Active",
+        "lastSeen": "2024-01-20T15:30:00Z"
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000005",
+        "assetClass": "CONTAINER",
+        "name": "TestContainer01",
+        "accountId": "00000000-0000-0000-0000-000000000002",
+        "customerId": "00000000-0000-0000-0000-000000000003",
+        "status": "Running",
+        "lastSeen": "2024-01-20T15:30:00Z"
+      }
+    ],
+    "totalItems": 2,
+    "pageSize": 50,
+    "pageNumber": 1,
+    "hasMore": false
+  },
+  "assetVariations": {
+    "minimalAsset": {
+      "id": "00000000-0000-0000-0000-000000000006",
+      "assetClass": "DEVICE",
+      "name": "MinimalAsset",
+      "accountId": "00000000-0000-0000-0000-000000000002",
+      "customerId": "00000000-0000-0000-0000-000000000003"
+    },
+    "fullAsset": {
+      "id": "00000000-0000-0000-0000-000000000007",
+      "assetClass": "DEVICE",
+      "name": "FullAsset",
+      "accountId": "00000000-0000-0000-0000-000000000002",
+      "customerId": "00000000-0000-0000-0000-000000000003",
+      "status": "Active",
+      "createdOn": "2024-01-01T00:00:00Z",
+      "updatedOn": "2024-01-20T15:30:00Z",
+      "lastSeen": "2024-01-20T15:30:00Z",
+      "properties": {
+        "os": "Windows Server 2019",
+        "ip": "192.168.1.100",
+        "location": "US-East",
+        "version": "1.2.3",
+        "custom": {
+          "environment": "Production",
+          "department": "IT",
+          "criticality": "High"
+        }
+      },
+      "tags": ["Production", "FullTest", "Critical"],
+      "relationships": [
+        {
+          "id": "00000000-0000-0000-0000-000000000008",
+          "type": "DEPENDS_ON",
+          "direction": "OUTBOUND"
+        }
+      ]
+    },
+    "deviceAsset": {
+      "id": "00000000-0000-0000-0000-000000000009",
+      "assetClass": "DEVICE",
+      "name": "TestDevice01",
+      "accountId": "00000000-0000-0000-0000-000000000002",
+      "customerId": "00000000-0000-0000-0000-000000000003",
+      "status": "Active",
+      "properties": {
+        "os": "Linux",
+        "ip": "192.168.1.101",
+        "location": "US-West"
+      }
+    },
+    "containerAsset": {
+      "id": "00000000-0000-0000-0000-000000000010",
+      "assetClass": "CONTAINER",
+      "name": "TestContainer02",
+      "accountId": "00000000-0000-0000-0000-000000000002",
+      "customerId": "00000000-0000-0000-0000-000000000003",
+      "status": "Running",
+      "properties": {
+        "image": "nginx:latest",
+        "podName": "web-pod-1",
+        "namespace": "production"
+      }
+    },
+    "invalidAsset": {
+      "id": "invalid-uuid",
+      "assetClass": "INVALID_TYPE",
+      "name": "",
+      "accountId": "invalid-account",
+      "customerId": "invalid-customer"
+    },
+    "malformedAsset": {
+      "id": null,
+      "name": 12345,
+      "status": ["invalid"],
+      "properties": "invalid"
+    },
+    "boundaryAsset": {
+      "id": "00000000-0000-0000-0000-000000000011",
+      "assetClass": "DEVICE",
+      "name": "A very long asset name that is exactly 255 characters long..............................................................................................................................................................................................................................................................................",
+      "accountId": "00000000-0000-0000-0000-000000000002",
+      "customerId": "00000000-0000-0000-0000-000000000003"
+    },
+    "relationshipAsset": {
+      "id": "00000000-0000-0000-0000-000000000012",
+      "assetClass": "DEVICE",
+      "name": "RelationshipTest",
+      "accountId": "00000000-0000-0000-0000-000000000002",
+      "customerId": "00000000-0000-0000-0000-000000000003",
+      "relationships": [
+        {
+          "id": "00000000-0000-0000-0000-000000000013",
+          "type": "DEPENDS_ON",
+          "direction": "OUTBOUND"
+        },
+        {
+          "id": "00000000-0000-0000-0000-000000000014",
+          "type": "CONTAINS",
+          "direction": "INBOUND"
+        }
+      ]
+    }
+  }
+}
