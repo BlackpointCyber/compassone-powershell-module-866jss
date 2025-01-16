@@ -1,0 +1,53 @@
+{
+  "validAssetUpdate": {
+    "nameUpdate": {
+      "name": "UpdatedDeviceName"
+    },
+    "statusUpdate": {
+      "status": "Inactive"
+    },
+    "propertiesUpdate": {
+      "properties": {
+        "os": "Windows Server 2022",
+        "ip": "192.168.1.200",
+        "location": "US-West"
+      }
+    },
+    "tagsUpdate": {
+      "tags": [
+        "Development",
+        "Database",
+        "NonCritical"
+      ]
+    },
+    "fullUpdate": {
+      "name": "FullyUpdatedDevice",
+      "status": "Active",
+      "properties": {
+        "os": "Windows Server 2022",
+        "ip": "192.168.1.200",
+        "location": "US-West"
+      },
+      "tags": [
+        "Production",
+        "Database",
+        "Critical"
+      ]
+    }
+  },
+  "invalidAssetUpdate": {
+    "emptyUpdate": {},
+    "invalidStatus": {
+      "status": "INVALID_STATUS"
+    },
+    "invalidProperties": {
+      "properties": "invalid_properties_string"
+    },
+    "readOnlyFields": {
+      "id": "00000000-0000-0000-0000-000000000099",
+      "assetClass": "CONTAINER",
+      "accountId": "00000000-0000-0000-0000-000000000088",
+      "customerId": "00000000-0000-0000-0000-000000000077"
+    }
+  }
+}
