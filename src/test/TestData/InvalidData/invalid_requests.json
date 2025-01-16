@@ -1,0 +1,274 @@
+{
+  "invalidAuthRequests": {
+    "missingToken": {
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "expectedResponse": {
+        "statusCode": 401,
+        "error": {
+          "code": "UNAUTHORIZED",
+          "message": "Authentication token is missing",
+          "category": "SecurityError"
+        }
+      }
+    },
+    "invalidToken": {
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer invalid-token-value"
+      },
+      "expectedResponse": {
+        "statusCode": 401,
+        "error": {
+          "code": "UNAUTHORIZED",
+          "message": "Invalid authentication token",
+          "category": "SecurityError"
+        }
+      }
+    },
+    "expiredToken": {
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer expired-token-value"
+      },
+      "expectedResponse": {
+        "statusCode": 401,
+        "error": {
+          "code": "UNAUTHORIZED",
+          "message": "Authentication token has expired",
+          "category": "SecurityError"
+        }
+      }
+    },
+    "invalidScope": {
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer valid-token-wrong-scope"
+      },
+      "expectedResponse": {
+        "statusCode": 403,
+        "error": {
+          "code": "FORBIDDEN",
+          "message": "Token does not have required scope",
+          "category": "PermissionDenied"
+        }
+      }
+    },
+    "malformedToken": {
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "malformed token structure"
+      },
+      "expectedResponse": {
+        "statusCode": 401,
+        "error": {
+          "code": "UNAUTHORIZED",
+          "message": "Malformed authorization header",
+          "category": "SecurityError"
+        }
+      }
+    }
+  },
+
+  "invalidParameterRequests": {
+    "invalidUuid": {
+      "path": "/assets/invalid-uuid-format",
+      "expectedResponse": {
+        "statusCode": 400,
+        "error": {
+          "code": "BAD_REQUEST",
+          "message": "Invalid UUID format",
+          "category": "InvalidArgument"
+        }
+      }
+    },
+    "invalidPageSize": {
+      "path": "/assets",
+      "queryParams": {
+        "pageSize": "1001"
+      },
+      "expectedResponse": {
+        "statusCode": 400,
+        "error": {
+          "code": "BAD_REQUEST",
+          "message": "Page size must be between 1 and 100",
+          "category": "InvalidArgument"
+        }
+      }
+    },
+    "invalidSortField": {
+      "path": "/assets",
+      "queryParams": {
+        "sortBy": "nonexistent_field"
+      },
+      "expectedResponse": {
+        "statusCode": 400,
+        "error": {
+          "code": "BAD_REQUEST",
+          "message": "Invalid sort field",
+          "category": "InvalidArgument"
+        }
+      }
+    },
+    "outOfRangeValues": {
+      "path": "/assets",
+      "queryParams": {
+        "page": "-1"
+      },
+      "expectedResponse": {
+        "statusCode": 400,
+        "error": {
+          "code": "BAD_REQUEST",
+          "message": "Page number must be positive",
+          "category": "InvalidArgument"
+        }
+      }
+    },
+    "invalidDateFormat": {
+      "path": "/assets",
+      "queryParams": {
+        "createdAfter": "invalid-date"
+      },
+      "expectedResponse": {
+        "statusCode": 400,
+        "error": {
+          "code": "BAD_REQUEST",
+          "message": "Invalid date format, expected ISO 8601",
+          "category": "InvalidArgument"
+        }
+      }
+    }
+  },
+
+  "invalidFormatRequests": {
+    "invalidJson": {
+      "body": "{invalid json structure",
+      "expectedResponse": {
+        "statusCode": 400,
+        "error": {
+          "code": "BAD_REQUEST",
+          "message": "Invalid JSON format",
+          "category": "InvalidArgument"
+        }
+      }
+    },
+    "invalidDateFormat": {
+      "body": {
+        "createdOn": "01-01-2024"
+      },
+      "expectedResponse": {
+        "statusCode": 400,
+        "error": {
+          "code": "BAD_REQUEST",
+          "message": "Invalid date format in createdOn",
+          "category": "InvalidArgument"
+        }
+      }
+    },
+    "invalidEnumValue": {
+      "body": {
+        "assetClass": "INVALID_CLASS"
+      },
+      "expectedResponse": {
+        "statusCode": 400,
+        "error": {
+          "code": "BAD_REQUEST",
+          "message": "Invalid asset class value",
+          "category": "InvalidArgument"
+        }
+      }
+    },
+    "malformedStructure": {
+      "body": {
+        "properties": "should be object"
+      },
+      "expectedResponse": {
+        "statusCode": 400,
+        "error": {
+          "code": "BAD_REQUEST",
+          "message": "Invalid properties structure",
+          "category": "InvalidArgument"
+        }
+      }
+    },
+    "invalidCharacters": {
+      "body": {
+        "name": "Asset\u0000Name"
+      },
+      "expectedResponse": {
+        "statusCode": 400,
+        "error": {
+          "code": "BAD_REQUEST",
+          "message": "Name contains invalid characters",
+          "category": "InvalidArgument"
+        }
+      }
+    }
+  },
+
+  "invalidSecurityRequests": {
+    "insufficientPermissions": {
+      "path": "/admin/settings",
+      "expectedResponse": {
+        "statusCode": 403,
+        "error": {
+          "code": "FORBIDDEN",
+          "message": "Insufficient permissions for this operation",
+          "category": "PermissionDenied"
+        }
+      }
+    },
+    "invalidScope": {
+      "path": "/assets/write",
+      "expectedResponse": {
+        "statusCode": 403,
+        "error": {
+          "code": "FORBIDDEN",
+          "message": "Operation requires write scope",
+          "category": "PermissionDenied"
+        }
+      }
+    },
+    "rateLimitExceeded": {
+      "headers": {
+        "X-Rate-Limit-Remaining": "0"
+      },
+      "expectedResponse": {
+        "statusCode": 429,
+        "error": {
+          "code": "RATE_LIMIT_EXCEEDED",
+          "message": "API rate limit exceeded",
+          "category": "LimitsExceeded",
+          "retryAfter": 60
+        }
+      }
+    },
+    "xssAttempt": {
+      "body": {
+        "name": "<script>alert('xss')</script>"
+      },
+      "expectedResponse": {
+        "statusCode": 400,
+        "error": {
+          "code": "BAD_REQUEST",
+          "message": "Input contains potentially malicious content",
+          "category": "SecurityError"
+        }
+      }
+    },
+    "sqlInjection": {
+      "queryParams": {
+        "filter": "1' OR '1'='1"
+      },
+      "expectedResponse": {
+        "statusCode": 400,
+        "error": {
+          "code": "BAD_REQUEST",
+          "message": "Invalid filter parameter",
+          "category": "SecurityError"
+        }
+      }
+    }
+  }
+}
