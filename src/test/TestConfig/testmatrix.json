@@ -1,0 +1,134 @@
+{
+  "powershell": {
+    "versions": [
+      {
+        "version": "5.1",
+        "features": {
+          "asyncOperations": false,
+          "enhancedClassSupport": false,
+          "crossPlatform": false,
+          "secretStoreSupport": true,
+          "enhancedErrorHandling": false,
+          "containerSupport": true
+        }
+      },
+      {
+        "version": "7.0",
+        "features": {
+          "asyncOperations": true,
+          "enhancedClassSupport": true,
+          "crossPlatform": true,
+          "secretStoreSupport": true,
+          "enhancedErrorHandling": true,
+          "containerSupport": true
+        }
+      },
+      {
+        "version": "7.2",
+        "features": {
+          "asyncOperations": true,
+          "enhancedClassSupport": true,
+          "crossPlatform": true,
+          "secretStoreSupport": true,
+          "enhancedErrorHandling": true,
+          "containerSupport": true
+        }
+      }
+    ]
+  },
+  "operatingSystem": {
+    "platforms": [
+      {
+        "name": "Windows",
+        "containerImage": "mcr.microsoft.com/powershell:windowsservercore",
+        "supportedVersions": ["5.1", "7.0", "7.2"],
+        "environmentSpecific": {
+          "coverageExclusions": ["**/Windows/**", "**/Mocks/**", "**/TestData/**"],
+          "timeoutMultiplier": 1.0
+        }
+      },
+      {
+        "name": "Linux",
+        "containerImage": "mcr.microsoft.com/powershell:ubuntu-20.04",
+        "supportedVersions": ["7.0", "7.2"],
+        "environmentSpecific": {
+          "coverageExclusions": ["**/Linux/**", "**/Mocks/**", "**/TestData/**"],
+          "timeoutMultiplier": 1.2
+        }
+      },
+      {
+        "name": "MacOS",
+        "containerImage": "mcr.microsoft.com/powershell:ubuntu-20.04",
+        "supportedVersions": ["7.0", "7.2"],
+        "environmentSpecific": {
+          "coverageExclusions": ["**/MacOS/**", "**/Mocks/**", "**/TestData/**"],
+          "timeoutMultiplier": 1.5
+        }
+      }
+    ]
+  },
+  "testCategories": [
+    {
+      "name": "Unit",
+      "enabled": true,
+      "parallel": true,
+      "timeout": 300,
+      "priority": 1
+    },
+    {
+      "name": "Integration",
+      "enabled": true,
+      "parallel": true,
+      "timeout": 600,
+      "priority": 2
+    },
+    {
+      "name": "Security",
+      "enabled": true,
+      "parallel": false,
+      "timeout": 900,
+      "priority": 3
+    },
+    {
+      "name": "Performance",
+      "enabled": true,
+      "parallel": true,
+      "timeout": 1800,
+      "priority": 4
+    }
+  ],
+  "features": {
+    "parallelExecution": {
+      "enabled": true,
+      "maxJobs": 4,
+      "timeout": 3600,
+      "throttling": {
+        "maxConcurrentTests": 8,
+        "maxConcurrentPlatforms": 2
+      }
+    },
+    "codeCoverage": {
+      "enabled": true,
+      "threshold": 100,
+      "excludePaths": ["**/Mocks/**", "**/TestData/**"],
+      "environmentAware": true,
+      "reportMerging": {
+        "enabled": true,
+        "outputFormat": ["Cobertura", "JaCoCo"]
+      }
+    },
+    "reporting": {
+      "formats": ["NUnitXml", "Html", "Json"],
+      "outputPath": "./test-results",
+      "consolidation": {
+        "enabled": true,
+        "mergeStrategy": "platform-version-category"
+      }
+    },
+    "cleanup": {
+      "enabled": true,
+      "retentionDays": 7,
+      "preserveFailures": true
+    }
+  }
+}
