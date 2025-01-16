@@ -1,0 +1,209 @@
+{
+  "errorResponseTemplate": {
+    "statusCode": 0,
+    "headers": {
+      "Content-Type": "application/json",
+      "Request-Id": "",
+      "X-Correlation-Id": "",
+      "X-Error-Source": "PSCompassOne"
+    },
+    "error": {
+      "code": "",
+      "message": "",
+      "details": {},
+      "retryable": false,
+      "category": "",
+      "source": "PSCompassOne",
+      "timestamp": "",
+      "localized": {
+        "message": "",
+        "language": "en-US"
+      }
+    },
+    "correlationId": "",
+    "timestamp": ""
+  },
+
+  "badRequestResponse": {
+    "statusCode": 400,
+    "headers": {
+      "Content-Type": "application/json",
+      "Request-Id": "req_400",
+      "X-Correlation-Id": "corr_400",
+      "X-Error-Source": "PSCompassOne"
+    },
+    "error": {
+      "code": "BAD_REQUEST",
+      "message": "The request was invalid or malformed",
+      "details": {
+        "validationErrors": []
+      },
+      "retryable": false,
+      "category": "InvalidArgument",
+      "source": "PSCompassOne",
+      "timestamp": "2024-01-20T00:00:00Z",
+      "localized": {
+        "message": "The request was invalid or malformed",
+        "language": "en-US"
+      }
+    }
+  },
+
+  "unauthorizedResponse": {
+    "statusCode": 401,
+    "headers": {
+      "Content-Type": "application/json",
+      "Request-Id": "req_401",
+      "X-Correlation-Id": "corr_401",
+      "X-Error-Source": "PSCompassOne"
+    },
+    "error": {
+      "code": "UNAUTHORIZED",
+      "message": "Authentication credentials are missing or invalid",
+      "details": {
+        "authScheme": "Bearer"
+      },
+      "retryable": true,
+      "category": "SecurityError",
+      "source": "PSCompassOne",
+      "timestamp": "2024-01-20T00:00:00Z",
+      "localized": {
+        "message": "Authentication credentials are missing or invalid",
+        "language": "en-US"
+      }
+    }
+  },
+
+  "forbiddenResponse": {
+    "statusCode": 403,
+    "headers": {
+      "Content-Type": "application/json",
+      "Request-Id": "req_403",
+      "X-Correlation-Id": "corr_403",
+      "X-Error-Source": "PSCompassOne"
+    },
+    "error": {
+      "code": "FORBIDDEN",
+      "message": "Access to the requested resource is forbidden",
+      "details": {
+        "requiredPermissions": []
+      },
+      "retryable": false,
+      "category": "PermissionDenied",
+      "source": "PSCompassOne",
+      "timestamp": "2024-01-20T00:00:00Z",
+      "localized": {
+        "message": "Access to the requested resource is forbidden",
+        "language": "en-US"
+      }
+    }
+  },
+
+  "notFoundResponse": {
+    "statusCode": 404,
+    "headers": {
+      "Content-Type": "application/json",
+      "Request-Id": "req_404",
+      "X-Correlation-Id": "corr_404",
+      "X-Error-Source": "PSCompassOne"
+    },
+    "error": {
+      "code": "NOT_FOUND",
+      "message": "The requested resource was not found",
+      "details": {
+        "resourceType": "",
+        "resourceId": ""
+      },
+      "retryable": false,
+      "category": "ObjectNotFound",
+      "source": "PSCompassOne",
+      "timestamp": "2024-01-20T00:00:00Z",
+      "localized": {
+        "message": "The requested resource was not found",
+        "language": "en-US"
+      }
+    }
+  },
+
+  "rateLimitResponse": {
+    "statusCode": 429,
+    "headers": {
+      "Content-Type": "application/json",
+      "Request-Id": "req_429",
+      "X-Correlation-Id": "corr_429",
+      "X-Error-Source": "PSCompassOne",
+      "Retry-After": "60"
+    },
+    "error": {
+      "code": "RATE_LIMIT_EXCEEDED",
+      "message": "API rate limit has been exceeded",
+      "details": {
+        "limit": 100,
+        "remaining": 0,
+        "reset": "2024-01-20T00:01:00Z"
+      },
+      "retryable": true,
+      "category": "LimitsExceeded",
+      "source": "PSCompassOne",
+      "timestamp": "2024-01-20T00:00:00Z",
+      "localized": {
+        "message": "API rate limit has been exceeded",
+        "language": "en-US"
+      }
+    },
+    "retryAfter": 60
+  },
+
+  "serverErrorResponse": {
+    "statusCode": 500,
+    "headers": {
+      "Content-Type": "application/json",
+      "Request-Id": "req_500",
+      "X-Correlation-Id": "corr_500",
+      "X-Error-Source": "PSCompassOne"
+    },
+    "error": {
+      "code": "INTERNAL_SERVER_ERROR",
+      "message": "An unexpected error occurred while processing the request",
+      "details": {
+        "errorId": ""
+      },
+      "retryable": true,
+      "category": "InvalidOperation",
+      "source": "PSCompassOne",
+      "timestamp": "2024-01-20T00:00:00Z",
+      "localized": {
+        "message": "An unexpected error occurred while processing the request",
+        "language": "en-US"
+      }
+    },
+    "stackTrace": "Stack trace details would be included here in development environment"
+  },
+
+  "serviceUnavailableResponse": {
+    "statusCode": 503,
+    "headers": {
+      "Content-Type": "application/json",
+      "Request-Id": "req_503",
+      "X-Correlation-Id": "corr_503",
+      "X-Error-Source": "PSCompassOne",
+      "Retry-After": "300"
+    },
+    "error": {
+      "code": "SERVICE_UNAVAILABLE",
+      "message": "The service is temporarily unavailable",
+      "details": {
+        "maintenanceWindow": "2024-01-20T00:00:00Z to 2024-01-20T01:00:00Z"
+      },
+      "retryable": true,
+      "category": "ConnectionError",
+      "source": "PSCompassOne",
+      "timestamp": "2024-01-20T00:00:00Z",
+      "localized": {
+        "message": "The service is temporarily unavailable",
+        "language": "en-US"
+      }
+    },
+    "retryAfter": 300
+  }
+}
